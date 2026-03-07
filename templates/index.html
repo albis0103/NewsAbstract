@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>資安情報 AI 助理</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; max-width: 800px; margin: auto; }
+        input, textarea, button { width: 100%; margin-bottom: 15px; padding: 10px; font-size: 16px; }
+        .box { border: 1px solid #ccc; padding: 20px; border-radius: 8px; background: #f9f9f9; }
+    </style>
+</head>
+<body>
+    <h2>🚨 資安情報 Web 介面</h2>
+    
+    <div class="box">
+        <form action="/analyze" method="post">
+            <label>1. 輸入 Gemini API Key:</label>
+            <input type="password" name="api_key" required>
+            <label>2. 輸入新聞網址:</label>
+            <input type="text" name="url" placeholder="https://..." required>
+            <button type="submit" style="background: #0078D4; color: white; cursor: pointer;">開始分析與生成</button>
+        </form>
+    </div>
+
+    {% if result %}
+    <h3 style="color: green;">✅ AI 初稿已生成！</h3>
+    <div class="box">
+        <form action="/send" method="post">
+            <label>AI 產出的信件內容 (您可在此直接修改):</label>
+            <textarea name="draft" rows="15">{{ result }}</textarea>
+            <hr>
+            <h4>📩 內部信件發送設定</h4>
+            <input type="text" name="sender" placeholder="發信帳號 (Outlook)" required>
+            <input type="password" name="pwd" placeholder="應用程式密碼" required>
+            <input type="text" name="target" placeholder="收件人 (Teams/主管信箱)" required>
+            <button type="submit" style="background: #28a745; color: white; cursor: pointer;">確認並寄出 Mail</button>
+        </form>
+    </div>
+    {% endif %}
+</body>
+</html>

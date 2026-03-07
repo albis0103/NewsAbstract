@@ -1,0 +1,212 @@
+Title: 【資安日報】3月5日，大規模執法行動鎖定網釣工具套件Tycoon 2FA，封鎖330個惡意網域
+
+URL Source: https://www.ithome.com.tw/news/174222
+
+Published Time: Sat, 07 Mar 2026 14:14:57 GMT
+
+Markdown Content:
+【資安日報】3月5日，大規模執法行動鎖定網釣工具套件Tycoon 2FA，封鎖330個惡意網域 | iThome
+===============
+
+[移至主內容](https://www.ithome.com.tw/news/174222#main-content)
+
+[](https://www.ithome.com.tw/news/174222)[![Image 1: 首頁](https://s4.itho.me/sites/default/files/ithome_logo_0.png)](https://www.ithome.com.tw/ "首頁")
+
+*   [新聞](https://www.ithome.com.tw/news)
+*   [AI](https://www.ithome.com.tw/ai)
+*   [資安](https://www.ithome.com.tw/security)
+*   [Cloud](https://www.ithome.com.tw/cloud)
+*   [CIO](https://www.ithome.com.tw/cio "CIO")
+*   [政府](https://www.ithome.com.tw/dgov)
+*   [醫療](https://www.ithome.com.tw/healthit)
+*   [永續](https://www.ithome.com.tw/sustainableit)
+*   [活動](https://www.ithome.com.tw/seminar)
+    *   [臺灣資安大會](https://cyber.ithome.com.tw/?utm_source=ithome-online&utm_medium=navbar&utm_campaign=navbar)
+    *   [臺灣雲端大會](https://cloudsummit.ithome.com.tw/)
+    *   [研討會訊息](https://www.ithome.com.tw/seminar)
+    *   [議程／講師徵求](https://www.ithome.com.tw/cfp)
+    *   [iThome鐵人賽](https://ithelp.ithome.com.tw/2026ironman?sc=iThomeNav "IT人的知識交流平臺")
+
+*   [技術](https://www.ithome.com.tw/tech)
+*   [IT EXPLAINED](https://webinar.ithome.com.tw/)
+
+*   [搜尋](https://www.ithome.com.tw/search)
+
+[新聞](https://www.ithome.com.tw/tags/%E6%96%B0%E8%81%9E)
+
+【資安日報】3月5日，大規模執法行動鎖定網釣工具套件Tycoon 2FA，封鎖330個惡意網域
+===============================================
+
+本日有兩大執法行動受到關注，其中又以針對對手中間人（AiTM）網釣工具包Tycoon 2FA的行動相當特別，參與此事的科技公司、資安公司，以及資安組織，紛紛發布新聞稿說明此事，或是揭露對於該網釣套件活動的觀察，這種情況相當罕見
+
+文/[周峻佑](https://www.ithome.com.tw/users/%E5%91%A8%E5%B3%BB%E4%BD%91)|2026-03-05 發表
+
+![Image 2](https://s4.itho.me/sites/default/files/styles/picture_size_large/public/field/image/20260305.jpg?itok=TQE-cZya)
+
+[**歐洲刑警組織主導大規模執法行動，摧毀網釣平臺Tycoon 2FA逾330個網域**](https://www.ithome.com.tw/news/174205)
+
+[![Image 3](https://s4.itho.me/sites/default/files/images/OP_TYCOON.png)](https://s4.itho.me/sites/default/files/images/OP_TYCOON.png)
+
+兩年前被揭露、不斷出現在資安新聞的大型網釣工具包租用平臺Tycoon 2FA，跨國執法機構聯手多家科技公司與資安公司，近期成功摧毀相關基礎設施。歐洲刑警組織（Europol）宣布，他們聯合執法合作夥伴與多家企業組織共同合作，在跨國行動成功摧毀Tycoon 2FA的全球釣魚即服務（Phishing-as-a-Service，PhaaS）平臺，這是有史以來規模最大的釣魚服務基礎設施。
+
+這次行動由歐洲刑警組織旗下的歐洲網路犯罪中心（EC3）協調，微軟主導技術層面的執行，英文品牌名稱即將改為TrendAI的趨勢科技提供相關威脅情報下展開，並獲得包括Cloudflare、Coinbase、Crowell、eSentire、Health-ISAC、Intel471、Proofpoint、Shadowserver基金會，以及SpyCloud等多家科技與資安公司、資安機構的合作夥伴支持。而對於基礎設施的查封與其他行動，則在歐洲刑警組織從中協調之下，由拉脫維亞、立陶宛、葡萄牙、波蘭、西班牙，以及英國的執法部門負責執行。
+
+[**14國聯手關閉駭客論壇LeakBase，查扣14.2萬會員資料**](https://www.ithome.com.tw/news/174207)
+
+[![Image 4](https://s4.itho.me/sites/default/files/images/OP_Leak_SplashPage.jpg)](https://s4.itho.me/sites/default/files/images/OP_Leak_SplashPage.jpg)
+
+美國司法部（DOJ）與歐洲刑警組織（Europol）宣布，由14國執法機構共同參與的跨國行動，成功關閉大型網路犯罪論壇LeakBase。該論壇長期販售遭竊資料與駭客工具，擁有超過142,000名註冊會員，被視為全球網路犯罪生態系的重要節點。此次行動除查扣網站與資料庫外，也對多名活躍用戶採取執法措施。
+
+根據歐洲刑警組織與美國司法部的調查，LeakBase主要交易內容包括外洩資料庫、帳號密碼組合，以及所謂的「Stealer Logs」，也就是由竊資軟體（Infostealer）從受害電腦蒐集並整理的資料，通常包含瀏覽器帳密、登入Cookie，以及裝置資訊等。這些資料常被用於帳號接管、詐欺，或進一步入侵企業系統。
+
+[**漏洞利用套件Coruna鎖定舊版iOS裝置弱點，多組人馬用於實際攻擊活動**](https://www.ithome.com.tw/news/174211)
+
+[![Image 5](https://s4.itho.me/sites/default/files/images/coruna-fig1_max-2100x2100.png)](https://s4.itho.me/sites/default/files/images/coruna-fig1_max-2100x2100.png)
+
+Google威脅情報團隊（GTIG）揭露名為Coruna的iOS漏洞利用工具包，可利用23種已知資安漏洞，並串連出5種完整的漏洞利用攻擊鏈，能針對執行iOS 13.0至17.2.1（分別於2019年9月及2023年12月推出）的iPhone發動攻擊。GTIG強調，此套件的核心價值在於對iOS漏洞的廣泛利用，並採用了非公開的利用技術來繞過相關緩解措施。
+
+針對此工具包的發現過程，GTIG起初是在2025年2月，看到間諜軟體的客戶用於高度針對性的攻擊活動，後續俄羅斯駭客UNC6353（APT29、Cozy Bear、SVR）於7月，使用該工具包植入烏克蘭網站，對當地的企業組織發動水坑式攻擊。到了去年12月，以經濟利益為動機的中國駭客團體UNC6691將其用於大規模活動，Coruna工具包在大量冒牌金融與加密貨幣網站出現，此時GTIG也取得完整的工具包內容。
+
+[**LastPass用戶被鎖定，駭客發送假的帳號異常警告，意圖挾持密碼保險庫**](https://www.ithome.com.tw/news/174221)
+
+[![Image 6](https://s4.itho.me/sites/default/files/images/phishing-campaign-march-2026---long-example-jpg.jpg)](https://s4.itho.me/sites/default/files/images/phishing-campaign-march-2026---long-example-jpg.jpg)
+
+密碼管理服務商LastPass提出警告，有人正鎖定該公司的客戶，發動一波新的釣魚攻擊活動，約從2026年3月1日開始，攻擊者透過多個電子郵件帳號寄送釣魚郵件，郵件主旨與內容看似轉寄的內部對話，聲稱有人正在對使用者的LastPass帳戶進行未經授權的操作，例如嘗試匯出密碼保險庫（Vault）、執行帳戶復原，或註冊新的受信任裝置。
+
+這些郵件刻意營造緊急情境，例如提醒使用者帳戶可能遭到入侵，並要求收件者立即採取行動，包括鎖定保管庫、撤銷裝置存取權，或回報可疑活動。郵件附帶的連結，則會將受害者導向偽造的LastPass單一登入（SSO）網頁，誘騙其輸入帳號與主密碼等憑證。
+
+[**與APT41有關的中國駭客組織鎖定政府機關與公部門，濫用Google Drive充當C2**](https://www.ithome.com.tw/news/174218)
+
+[![Image 7](https://s4.itho.me/sites/default/files/images/HRRI973HWK-image1.png)](https://s4.itho.me/sites/default/files/images/HRRI973HWK-image1.png)
+
+資安公司Check Point的研究團隊近日揭露名為Silver Dragon的APT駭客組織，該組織自2024年中期以來，持續對東南亞與歐洲多國機構發動網路間諜活動，主要鎖定政府與公共部門，試圖長期潛伏於受害網路環境，以竊取敏感資訊。該公司認為，此駭客團體應與APT41有密切關聯。
+
+針對這些駭客的攻擊手法，Silver Dragon通常透過兩種主要方式取得初始入侵管道，其中一種是透過能從網際網路存取的伺服器，利用漏洞進行滲透，另一種是發送帶有惡意附件的釣魚郵件。一旦成功入侵，攻擊者會部署滲透工具並逐步在內部網路橫向移動，以取得更高權限並擴大控制範圍。
+
+[**思科修補防火牆管理平臺Secure FMC兩個滿分漏洞**](https://www.ithome.com.tw/news/174203)
+
+思科釋出安全更新，修補兩個防火牆管理軟體Secure FMC（Secure Firewall Management Center）重大漏洞，分別是：身分驗證繞過漏洞CVE-2026-20079，以及遠端程式碼執行（RCE）漏洞CVE-2026-20131，值得留意的是，這些漏洞的CVSS風險值，皆達到10分滿分的程度，極為危險。
+
+這些漏洞都存在於網頁管理介面，其中，CVE-2026-20079源自開機時產生不當的系統流程。攻擊者可傳送特製的HTTP請求以濫用漏洞。成功濫用可讓攻擊者取得Root權限，而執行多種指令碼及命令；另一個漏洞CVE-2026-20131，源自使用者提供的特定Java位元串流，出現不安全反序列化現象。攻擊者可傳送變造過的序列化Java物件觸發，未經身分驗證的攻擊者可透過Root執行任何Java程式碼。
+
+[**n8n平臺與中國騰達路由器漏洞遭利用，駭客藉以散布Zerobot殭屍網路**](https://www.ithome.com.tw/news/174188)
+
+全球內容傳遞網路（CDN）業者Akamai的資安研究團隊SIRT發布威脅報告指出，名為Zerobot的Mirai變種殭屍網路，正積極利用近期揭露的已知漏洞CVE-2025-7544與CVE-2025-68613，攻擊中國騰達（Tenda）路由器以及n8n工作流程自動化平臺。SIRT表示，他們在全球誘捕網路於2026年1月中旬觀測到針對這兩個漏洞的利用嘗試，整體活動則至少可追溯至2025年12月初。
+
+Zerobot此次主要鎖定兩個已被評為重大風險的漏洞，第一個是2025年7月公開的CVE-2025-7544，該漏洞存在於Tenda AC1206路由器的特定端點中，屬於遠端堆疊緩衝區溢位漏洞。由於系統在處理設備列表參數時未進行長度檢查，攻擊者可遠端引發緩衝區溢位，施行DoS或遠端程式碼執行攻擊。第二個重大風險漏洞則是2025年12月揭露的CVE-2025-68613，影響範圍涵蓋n8n平臺的多個版本。該平臺的工作流程表示式評估系統缺乏適當的沙盒隔離機制，使得具備無特權登入帳號的攻擊者能突破執行環境限制，在伺服器底層執行任意程式碼、讀寫檔案並竊取API金鑰等環境變數。
+
+[**俄羅斯駭客UAC-0050攻擊歐洲金融機構，假冒烏克蘭司法機構郵件散布RMS遠端工具**](https://www.ithome.com.tw/news/174200)
+
+[![Image 8](https://s4.itho.me/sites/default/files/images/figure-1_343c322be6d89a64f32df2c696c58719.png)](https://s4.itho.me/sites/default/files/images/figure-1_343c322be6d89a64f32df2c696c58719.png)
+
+資安業者BlueVoyant於今年3月發布威脅分析，揭露俄羅斯相關駭客組織UAC-0050在2月對一家歐洲金融機構發動社交工程攻擊。烏克蘭電腦緊急應變小組（CERT-UA）追蹤該威脅行為者為UAC-0050，部分研究亦將其稱為DaVinci Group或Agency DaVinci，而BlueVoyant則將此次攻擊活動命名為Mercenary Akula。攻擊者偽造烏克蘭司法機構網域寄送魚叉式釣魚郵件，誘使目標下載惡意檔案並安裝遠端管理工具Remote Manipulator System（RMS）。
+
+BlueVoyant表示，RMS原本是合法的遠端管理工具，但若遭濫用，攻擊者往往可藉此在受害系統中維持長期遠端存取，並用於資料蒐集或後續入侵。這類利用合法系統工具發動攻擊的手法，被稱為寄生攻擊或就地取材（Living-off-the-Land，LotL）。由於相關工具本身並非惡意程式，在部分情況下較不容易被傳統防毒軟體或安全系統偵測。
+
+[**榮創能源科技遭網路攻擊**](https://mopsov.twse.com.tw/mops/web/ajax_t05sr01_1?firstin=true&stp=1&step=1&SEQ_NO=1&SPOKE_TIME=155605&SPOKE_DATE=20260303&COMPANY_ID=3437)
+
+專精LED光電元件的科技製造商榮創（3437）於證券交易所公開資訊觀測站公告，3月3日公司的資訊系統遭遇網路資安攻擊。榮創表示，發現異常後已立即啟動相關資安應變與防護措施，目前評估對營運影響有限，目前未發現客戶個資、公司機密或重要文件外洩情形。
+
+**其他資安威脅**
+
+◆**[為報復美國與以色列對伊朗展開軍事行動，駭客已對16個國家發動149起DDoS攻擊](https://thehackernews.com/2026/03/149-hacktivist-ddos-attacks-hit-110.html)**
+
+◆**[餐飲科技服務供應商HungerRush傳出資料外洩，駭客向用戶寄信要脅該公司付錢](https://www.bleepingcomputer.com/news/security/hacker-mass-mails-hungerrush-extortion-emails-to-restaurant-patrons/)**
+
+◆**[美國紐約體育館Madison Square Garden發生資料外洩，起因是Oracle EBS系統遭駭](https://securityaffairs.com/188814/cyber-crime/oracle-ebs-2025-campaign-impacts-madison-square-garden-sensitive-data-leaked.html)**
+
+◆**[美國資料分析公司LexisNexis傳出被入侵，駭客透過重大漏洞React2Shell取得其AWS基礎設施而得逞](https://www.bleepingcomputer.com/news/security/lexisnexis-confirms-data-breach-as-hackers-leak-stolen-files/)**
+
+◆**[荷蘭油漆製造商AkzoNobel美國網路環境遭駭，勒索軟體Anubis聲稱竊得170 GB內部資料](https://www.bleepingcomputer.com/news/security/paint-maker-giant-akzonobel-confirms-cyberattack-on-us-site/)**
+
+◆**[VMware Aria Operations高風險漏洞CVE-2026-22719被用於實際攻擊活動](https://www.bleepingcomputer.com/news/security/cisa-flags-vmware-aria-operations-rce-flaw-as-exploited-in-attacks/)**
+
+**近期資安日報**
+
+[**【3月4日】駭客借助AI入侵大量部署於企業分支辦公室Fortinet防火牆，滲透整個公司的網路環境**](https://www.ithome.com.tw/news/174186)
+
+[**【3月3日】抗議移民機關執法過當，駭客從美國國土安全部竊取合約資料**](https://www.ithome.com.tw/news/174157)
+
+[**【3月2日】OpenClaw存在可被用於接管的資安漏洞ClawJacked**](https://www.ithome.com.tw/news/174114)
+
+> [iThome Security](https://www.facebook.com/ithomecyber)
+
+熱門新聞
+----
+
+[![Image 9](https://s4.itho.me/sites/default/files/styles/square_thumbnail/public/field/image/0306-gpt54-960.jpg?itok=Bt6IH99N)](https://www.ithome.com.tw/news/174226)
+
+[OpenAI推出GPT-5.4，強化專業能力並首度支援AI操作電腦](https://www.ithome.com.tw/news/174226)
+
+2026-03-06
+
+[![Image 10](https://s4.itho.me/sites/default/files/styles/square_thumbnail/public/field/image/aws_uae_az_-_l.jpg?itok=LYtTHn8C)](https://www.ithome.com.tw/news/174092)
+
+[美伊衝突期間，AWS中東資料中心因外部撞擊事故導致服務中斷](https://www.ithome.com.tw/news/174092)
+
+2026-03-02
+
+[![Image 11](https://s4.itho.me/sites/default/files/styles/square_thumbnail/public/field/image/0302-windows_file_explorer-960.jpg?itok=Pbv3scOA)](https://www.ithome.com.tw/news/174103)
+
+[駭客利用檔案管理員Windows File Explorer和WebDAV散布惡意程式](https://www.ithome.com.tw/news/174103)
+
+2026-03-02
+
+[![Image 12](https://s4.itho.me/sites/default/files/styles/square_thumbnail/public/field/image/zi_an_zhou_bao_20260228.jpg?itok=AwwZMYXn)](https://www.ithome.com.tw/news/174099)
+
+[【資安週報】0223~0226，AI自動化漏洞掃描將趨於普及，Anthropic推出Claude Code Security](https://www.ithome.com.tw/news/174099)
+
+2026-03-02
+
+[![Image 13](https://s4.itho.me/sites/default/files/styles/square_thumbnail/public/field/image/xie_qu_22_0.jpg?itok=pv1W8LCO)](https://www.ithome.com.tw/news/174185)
+
+[鴻海釋出未來5年永續發展藍圖，燈塔工廠要增加1倍](https://www.ithome.com.tw/news/174185)
+
+2026-03-04
+
+[![Image 14](https://s4.itho.me/sites/default/files/styles/square_thumbnail/public/field/image/0304-gemini_generated_android_malware-960-2.jpg?itok=5OzIkSxE)](https://www.ithome.com.tw/news/174198)
+
+[卡巴斯基揭露Android後門Keenadu，部分裝置出廠即遭植入並形成殭屍網路](https://www.ithome.com.tw/news/174198)
+
+2026-03-05
+
+[![Image 15](https://s4.itho.me/sites/default/files/styles/square_thumbnail/public/field/image/capture_589_-_addressing_antigravity_bans_reinstating_access_google-gemini_gemini-cli_-_github.com_.jpg?itok=zj-BcQE7)](https://www.ithome.com.tw/news/174106)
+
+[Google抓Antigravity濫用誤鎖Gemini CLI用戶，新增再認證解封流程](https://www.ithome.com.tw/news/174106)
+
+2026-03-02
+
+[![Image 16](https://s4.itho.me/sites/default/files/styles/square_thumbnail/public/field/image/_wgpcmghe4u.jpg?itok=PBLFcQt0)](https://www.ithome.com.tw/news/174098)
+
+[OpenClaw存在資安漏洞ClawJacked，攻擊者恐透過WebSocket連線挾持](https://www.ithome.com.tw/news/174098)
+
+2026-03-02
+
+ Advertisement
+
+> [iThome Security](https://www.facebook.com/ithomecyber)
+
+專題報導
+----
+
+[[![Image 17](https://s4.itho.me/sites/default/files/styles/picture_size_small/public/12731274-feng_mian_gu_shi_-p1-ming_de_-open-960x420_2.jpg?itok=6hXA2Ap7)](https://www.ithome.com.tw/article/173880) 【加速生成式AI發展的下一個關鍵力量】向量資料庫與儲存系統的崛起](https://www.ithome.com.tw/article/173880)
+
+[[![Image 18](https://s4.itho.me/sites/default/files/styles/picture_size_small/public/1272-feng_mian_gu_shi_-p1-wen_bin_-open-960x420_kao_bei_0.jpg?itok=GfQTcL9x)](https://www.ithome.com.tw/article/173836) 手機就是你的憑證皮夾](https://www.ithome.com.tw/article/173836)
+
+[[![Image 19](https://s4.itho.me/sites/default/files/styles/picture_size_small/public/1271-feng_mian_gu_shi_-p1-dou_zi_-open-960x420_kao_bei_0.jpg?itok=nKvakx24)](https://www.ithome.com.tw/article/173687) AI原生架構的崛起](https://www.ithome.com.tw/article/173687)
+
+[[![Image 20](https://s4.itho.me/sites/default/files/styles/picture_size_small/public/1270-feng_mian_gu_shi_-p1-ming_de_-open-960x420_kao_bei_0.jpg?itok=Yv9SQoAk)](https://www.ithome.com.tw/article/173540) 2025全球IT大當機事件回顧](https://www.ithome.com.tw/article/173540)
+
+[[![Image 21](https://s4.itho.me/sites/default/files/styles/picture_size_small/public/1269-feng_mian_gu_shi_-p1-zheng_han_-open-960x420_kao_bei_0.jpg?itok=zYzPbLDT)](https://www.ithome.com.tw/article/173414) PSIRT零基礎入門](https://www.ithome.com.tw/article/173414)
+
+[更多專題報導](http://www.ithome.com.tw/feature)
+
+*   電週文化事業版權所有、轉載必究 | Copyright © iThome
+*   [刊登廣告](https://www.ithome.com.tw/aboutus/)
+*   [授權服務](https://www.ithome.com.tw/aboutus/)
+*   [服務信箱](https://www.ithome.com.tw/aboutus/)
+*   [隱私權聲明與會員使用條款](https://www.ithome.com.tw/terms)
+*   [資訊安全政策](https://www.ithome.com.tw/security-policy)
+*   [關於iThome](https://www.ithome.com.tw/aboutus/)
+*   [RSS](https://www.ithome.com.tw/rss)
+*   [徵才](https://www.ithome.com.tw/jobs)
