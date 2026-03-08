@@ -3,17 +3,23 @@ import os
 import requests
 from google import genai  # 使用新版 SDK
 from dotenv import load_dotenv
-
-# 載入 .env 檔案
-load_dotenv()
+from pathlib import Path
+# 取得目前這個程式碼檔案的路徑，並找到它旁邊的 .env
+env_path = Path(__file__).parent / ".env"
+load_dotenv(dotenv_path=env_path)
 
 # ---------------------------------------------------------
 # 負責抓取網頁內容
 # ---------------------------------------------------------
 def readnew(url):
     jina_url = f"https://r.jina.ai/{url}"
+    jina_api_key = os.getenv("JINA_API_KEY")
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36", 
+        "Authorization":f"Bearer {jina_api_key}"
+    }
     try:
-        response = requests.get(jina_url, timeout=10) # 建議加上 timeout 防止掛掉
+        response = requests.get(jina_url,headers = headers, timeout=20) # 加上 timeout 
         if response.status_code == 200:
             return response.text
         return None
@@ -31,7 +37,7 @@ def call_gemini(prompt, article_text, api_key):
     try:
         # 推薦使用 2.0-flash，速度快且對資安摘要效果極佳
         response = client.models.generate_content(
-            model='gemini-2.5-pro', 
+            model='gemini-2.5-flash', 
             contents=full_text
         )
         return response.text

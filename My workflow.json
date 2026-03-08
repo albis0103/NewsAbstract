@@ -1,0 +1,95 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "command": "=/Users/jason0103/Desktop/Internship/NewsAbstract/venv/bin/python /Users/jason0103/Desktop/Internship/NewsAbstract/ai_service.py \"{{ $json.NewsUrl }}\""
+      },
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        224,
+        0
+      ],
+      "id": "bf524dbe-f086-45b5-bb01-d7091e145e12",
+      "name": "Execute Command"
+    },
+    {
+      "parameters": {
+        "formTitle": "news",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "NewsUrl"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.5,
+      "position": [
+        0,
+        0
+      ],
+      "id": "1d6acd27-d17d-44b8-8923-ec7ba231cf94",
+      "name": "On form submission",
+      "webhookId": "d1073f0c-78e6-48e8-8bbd-79990f90dc55"
+    },
+    {
+      "parameters": {
+        "operation": "completion",
+        "completionTitle": "NewsAbstract",
+        "completionMessage": "={{ $json.stdout }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.form",
+      "typeVersion": 2.5,
+      "position": [
+        464,
+        0
+      ],
+      "id": "875e58ad-6794-4ad3-a879-458125a607ad",
+      "name": "Form",
+      "webhookId": "231d7705-fbe0-4000-8a22-357a1ae00796"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Execute Command",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Command": {
+      "main": [
+        [
+          {
+            "node": "Form",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "d00b79f5-8c32-4d0c-a609-238aa198e2ae",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "877f498578f9ae92bff2a227cec86a26a19499c00f496ea8b5614b361a1d8676"
+  },
+  "id": "H0nZqlQHc4jcuj96",
+  "tags": []
+}
