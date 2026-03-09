@@ -4,6 +4,8 @@ import requests
 from google import genai  # 使用新版 SDK
 from dotenv import load_dotenv
 from pathlib import Path
+
+sys.stdout.reconfigure(encoding = 'utf-8')#強制utf編碼
 # 取得目前這個程式碼檔案的路徑，並找到它旁邊的 .env
 env_path = Path(__file__).parent / ".env"
 load_dotenv(dotenv_path=env_path)
@@ -29,16 +31,14 @@ def readnew(url):
 # ---------------------------------------------------------
 # 負責呼叫 Gemini API
 # ---------------------------------------------------------
-def call_gemini(prompt, article_text, api_key):
+def call_gemini(prompt, api_key):
     client = genai.Client(api_key=api_key)
-    
-    full_text = f"{prompt}\n\n以下是新聞全文：\n{article_text}"
     
     try:
         # 推薦使用 2.0-flash，速度快且對資安摘要效果極佳
         response = client.models.generate_content(
             model='gemini-2.5-flash', 
-            contents=full_text
+            contents=prompt
         )
         return response.text
     except Exception as e:
@@ -59,7 +59,8 @@ def generate_summary(url, api_key):
     2. [威脅與影響分析]：分析此事件對企業或系統的潛在衝擊。(50字)
     3. [防禦與修補建議]：列出具體的可行建議。(50字)
     """
-    return call_gemini(prompt, article_text, api_key)
+    full_text = f"{prompt}\n\n以下是新聞全文：\n{article_text}"
+    return call_gemini(prompt, api_key)
 
 # ---------------------------------------------------------
 # 4. 主程式 (系統進入點)
