@@ -60,7 +60,7 @@ def generate_summary(url, api_key):
     3. [防禦與修補建議]：列出具體的可行建議。(50字)
     """
     full_text = f"{prompt}\n\n以下是新聞全文：\n{article_text}"
-    return call_gemini(prompt, api_key)
+    return call_gemini(full_text, api_key)
 
 # ---------------------------------------------------------
 # 4. 主程式 (系統進入點)
