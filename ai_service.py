@@ -52,12 +52,26 @@ def generate_summary(url, api_key):
     if not article_text:
         return "❌ 網頁抓取失敗，請確認網址或爬蟲限制。"
         
-    prompt = """
-    請以資安專家的角度閱讀新聞，並生成固定的信件格式。
-    包含三個區塊：
-    1. [事件摘要]：簡述重點(200字內)。
-    2. [威脅與影響分析]：分析此事件對企業或系統的潛在衝擊。(50字)
-    3. [防禦與修補建議]：列出具體的可行建議。(50字)
+    prompt = """請以資安專家的角度閱讀新聞，以純文字依照下列結構生成一份「技術情報摘要」。請確保用詞精確（例如：Passkey、Entra ID、FIDO2），並嚴格遵守以下格式：
+
+1. [標題]：簡潔標記新聞核心重點。
+
+2. [發生時間]：
+   - 正式發布：(標註具體日期)
+   - 預計部署：(標註部署時程或預計影響時間)
+
+3. [影響範圍]：
+   - 作業系統版本：(註明受影響或支援的系統)
+   - 適用對象：(說明適用的使用者等級或特定的企業驗證環境)
+
+4. [潛在影響]：
+   - 深入分析該功能的核心價值。需包含技術原理（如：Challenge-Response、數位簽章）、防禦能力（如：防範釣魚、MitM 攻擊）以及對無密碼（Passwordless）趨勢的推動。
+
+5. [重點整理]：
+   - 使用此功能的必要條件：(以列點方式說明硬體、軟體或帳號設定要求)
+   - 操作流程簡述：(描述使用者端的操作路徑，如選單路徑或驗證方式)
+
+6. [新聞網址]：(放入來源連結)
     """
     full_text = f"{prompt}\n\n以下是新聞全文：\n{article_text}"
     return call_gemini(full_text, api_key)
@@ -68,8 +82,6 @@ def generate_summary(url, api_key):
 def main():
     api_key = os.getenv("GEMINI_API_KEY")
     if not api_key:
-        #此為測試網址
-        target_url = "https://www.ithome.com.tw/news/161000"
         print("❌ 系統錯誤：找不到 API Key，請檢查 .env 檔案。", file=sys.stderr)
         sys.exit(1)
 #python3 ai_service.py https://examplenews.com 長度 = 2
