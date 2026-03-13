@@ -25,3 +25,8 @@ typing-inspection==0.4.2
 typing_extensions==4.15.0
 urllib3==2.6.3
 websockets==16.0
+gensim>=4.3.0
+numpy
+scipy
+smart_open
+jieba

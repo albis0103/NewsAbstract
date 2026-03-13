@@ -1,3 +1,8 @@
 venv/
 .env
 __pycache__/
+/models/*.bin
+/models/*.gz
+/models/*.kv
+.DS_Store
+Thumbs.db
