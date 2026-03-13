@@ -67,11 +67,11 @@ def generate_summary(url, api_key):
 4. [潛在影響]：
    - 深入分析該功能的核心價值。需包含技術原理（如：Challenge-Response、數位簽章）、防禦能力（如：防範釣魚、MitM 攻擊）以及對無密碼（Passwordless）趨勢的推動。
 
-5. [重點整理]：
+5. [重點整理]：(整段式表達, max:160字)
    - 使用此功能的必要條件：(以列點方式說明硬體、軟體或帳號設定要求)
    - 操作流程簡述：(描述使用者端的操作路徑，如選單路徑或驗證方式)
 
-6. [新聞網址]：(放入來源連結)
+6. [新聞網址]：(放入來源連結, 整段式表達, max:160字)
     """
     full_text = f"{prompt}\n\n以下是新聞全文：\n{article_text}"
     return call_gemini(full_text, api_key)
