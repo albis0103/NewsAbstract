@@ -4,5 +4,6 @@ __pycache__/
 /models/*.bin
 /models/*.gz
 /models/*.kv
+/models/*.vec
 .DS_Store
 Thumbs.db
