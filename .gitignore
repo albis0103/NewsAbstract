@@ -1,9 +1,6 @@
 venv/
 .env
 __pycache__/
-/models/*.bin
-/models/*.gz
-/models/*.kv
-/models/*.vec
+models/
 .DS_Store
 Thumbs.db
