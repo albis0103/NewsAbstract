@@ -1,7 +1,8 @@
 import numpy as np
 from gensim.models import KeyedVectors
 import sys
-
+import re
+from deep_translator import GoogleTranslator
 
 print("wait for loading word2vec model")
 model = KeyedVectors.load("models/fast_model.kv", mmap = 'r')
@@ -13,11 +14,34 @@ SECURITY_WORD_DICTIONARY = {
     "edr": "endpoint detection response",
 }
 
-def get_word2vec(text, model):
-    text = text.lower().strip()
-    search_text = SECURITY_WORD_DICTIONARY.get(text, text)
+def is_chinese(text):
+    # \u4e00-\u9fff 是 Unicode 中的中文範圍
+    return bool(re.search(r'[\u4e00-\u9fff]', text))
+def translate_english(text):
+    try:
+        translator = GoogleTranslator(source="zh-TW", target="en")
+        translated_text = translator.translate(text)
+        if translated_text:return translated_text
+        else:return text
+    except Exception as e:
+        print(f"[error]翻譯服務異常:{e}")
+        return text
+
+def preprocess_text(text):
+    if not text: return []
+    cleaned_text = text.strip()
+    if is_chinese(cleaned_text):
+        cleaned_text = translate_english(cleaned_text)
+    cleaned_text = cleaned_text.lower()
+    search_text = SECURITY_WORD_DICTIONARY.get(cleaned_text, cleaned_text)
     words = search_text.split()
-    
+    return words
+
+
+
+def get_word2vec(text, model):
+    words = preprocess_text(text)
+    #vector 紀錄words的語意分佈
     vectors = []
     for w in words:
         if w in model:
