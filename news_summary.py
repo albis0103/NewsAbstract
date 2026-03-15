@@ -10,9 +10,8 @@ sys.stdout.reconfigure(encoding = 'utf-8')#強制utf編碼
 env_path = Path(__file__).parent / ".env"
 load_dotenv(dotenv_path=env_path)
 
-# ---------------------------------------------------------
+
 # 負責抓取網頁內容
-# ---------------------------------------------------------
 def readnew(url):
     jina_url = f"https://r.jina.ai/{url}"
     jina_api_key = os.getenv("JINA_API_KEY")
@@ -28,9 +27,8 @@ def readnew(url):
     except Exception:
         return None
 
-# ---------------------------------------------------------
+
 # 負責呼叫 Gemini API
-# ---------------------------------------------------------
 def call_gemini(prompt, api_key):
     client = genai.Client(api_key=api_key)
     
@@ -44,9 +42,8 @@ def call_gemini(prompt, api_key):
     except Exception as e:
         return f"❌ 呼叫 Gemini 時發生錯誤: {e}"
 
-# ---------------------------------------------------------
+
 # 生成摘要
-# ---------------------------------------------------------
 def generate_summary(url, api_key):
     article_text = readnew(url)
     if not article_text:
