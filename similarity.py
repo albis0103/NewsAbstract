@@ -3,6 +3,7 @@ from gensim.models import KeyedVectors
 import sys
 import re
 from deep_translator import GoogleTranslator
+import json
 
 print("wait for loading word2vec model")
 model = KeyedVectors.load("models/fast_model.kv", mmap = 'r')
@@ -12,6 +13,9 @@ SECURITY_WORD_DICTIONARY = {
     "mde": "microsoft defender endpoint",
     "waf": "web application firewall",
     "edr": "endpoint detection response",
+}
+CUSTOMER_FEATURES_DB = {
+    "北榮":["medical", "records", "HIS system"]
 }
 
 def is_chinese(text):
@@ -67,7 +71,31 @@ def get_similarity(word1, word2, model):
     #similarity = cos(theta)  = A Similarity=cos(θ)= A⋅B / ||A|| ||B||
     return np.dot(v1, v2) / (norm1 * norm2)
 
-word1 = sys.argv[1]
-word2 = sys.argv[2]
-similarity_score = get_similarity(word1, word2, model)
-print(similarity_score)
+def calculate_customer_similarity(customer_feature, news_keyword, model):
+    if not customer_feature or not news_keyword: return 0.0
+
+    probability_score = []
+    for keyword in news_keyword:
+        max_pi = 0.0
+        for feature in customer_feature:
+            similarity_score = get_similarity(feature, keyword, model)
+            if similarity_score > max_pi : 
+                max_pi = similarity_score
+        probability_score.append(max_pi)
+    final_similarity = sum(probability_score) / len(probability_score)
+    return final_similarity
+
+def main():
+    try:
+        news_input = sys.argv[1]
+        news_keyword = [k.strip() for k in news_input.split(',')]
+        
+        results = {}
+        for customer_name, features in CUSTOMER_FEATURES_DB.items():
+            final_similarity = calculate_customer_similarity(features, news_keyword, model)
+            results[customer_name] = round(float(final_similarity), 4)
+        print(json.dumps(results, ensure_ascii=False))
+    except Exception as e:
+        print(json.dumps({"error":str(e)}, ensure_ascii=False))
+if __name__ == "__main__":
+    main()
