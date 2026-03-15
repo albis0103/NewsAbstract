@@ -75,9 +75,7 @@ def generate_summary(url, api_key):
     full_text = f"{prompt}\n\n以下是新聞全文：\n{article_text}"
     return call_gemini(full_text, api_key)
 
-# ---------------------------------------------------------
 # 4. 主程式 (系統進入點)
-# ---------------------------------------------------------
 def main():
     api_key = os.getenv("GEMINI_API_KEY")
     if not api_key:
