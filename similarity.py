@@ -5,9 +5,9 @@ import re
 from deep_translator import GoogleTranslator
 import json
 
-print("wait for loading word2vec model")
+sys.stderr.write("wait for loading word2vec model")
 model = KeyedVectors.load("models/fast_model.kv", mmap = 'r')
-print("load sucess")
+sys.stderr.write("load sucess")
 
 SECURITY_WORD_DICTIONARY = {
     "mde": "microsoft defender endpoint",

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>SecOps 新聞分析系統</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f2f5; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .card { background: white; padding: 40px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 450px; text-align: center; }
+        .logo { font-size: 24px; font-weight: bold; color: #0078d4; margin-bottom: 20px; }
+        input { width: 100%; padding: 12px; margin: 20px 0; border: 2px solid #e1e4e8; border-radius: 8px; font-size: 14px; outline: none; transition: border-color 0.3s; }
+        input:focus { border-color: #0078d4; }
+        button { background: #0078d4; color: white; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; transition: background 0.3s; width: 100%; }
+        button:hover { background: #005a9e; }
+        .footer { margin-top: 20px; font-size: 12px; color: #888; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="logo"> SecOps AI Intelligence</div>
+        <p>請輸入要分析的新聞網址</p>
+        <input type="text" id="newsUrl" placeholder="https://www.ithome.com.tw/..." autofocus>
+        <button onclick="analyze()">開始分析並產出摘要</button>
+        <div class="footer"> n8n + Gemini 2.5 Flash 製作 </div>
+    </div>
+
+    <script>
+        function analyze() {
+            let url = document.getElementById('newsUrl').value.trim();
+            
+            // 修正點：自動過濾掉頭尾不小心貼進來的引號
+            url = url.replace(/^["']|["']$/g, '');
+
+            if (!url) return alert('請先貼上網址！');
+            
+            // 檢查是否為合法網址格式
+            if (!url.startsWith('http')) {
+                return alert('請輸入完整的網址 (需包含 http 或 https)');
+            }
+
+            // 指向 n8n 測試路徑
+            const webhookUrl = "http://localhost:5678/webhook/cyber-news-analysis";
+            
+            // 正確拼接參數
+            const finalUrl = `${webhookUrl}?NewsUrl=${encodeURIComponent(url)}`;
+            
+            console.log("正在發送至:", finalUrl);
+            window.location.href = finalUrl;
+        }
+
+        // 支援 Enter 鍵送出
+        document.getElementById('newsUrl').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') analyze();
+        });
+    </script>
+</body>
+</html>
