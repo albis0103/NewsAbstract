@@ -15,7 +15,13 @@ SECURITY_WORD_DICTIONARY = {
     "edr": "endpoint detection response",
 }
 CUSTOMER_FEATURES_DB = {
-    "北榮":["medical", "records", "HIS system"]
+    "北榮":["medical", "records", "HIS system"],
+    "佳朋":["medical", "records", "HIS system"],
+    "億康":["medical", "records", "HIS system"],
+    "寬御":["medical", "records", "HIS system"],
+    "台睿":["medical", "records", "HIS system"],
+    "精睿":["medical", "records", "HIS system"],
+    "攝影人":["medical", "records", "HIS system"]
 }
 
 def is_chinese(text):
