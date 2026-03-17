@@ -10,18 +10,51 @@ model = KeyedVectors.load("models/fast_model.kv", mmap = 'r')
 sys.stderr.write("load sucess")
 
 SECURITY_WORD_DICTIONARY = {
+    # 資安產品 (你原本的)
     "mde": "microsoft defender endpoint",
     "waf": "web application firewall",
     "edr": "endpoint detection response",
+    
+    # 醫療業
+    "his": "hospital information", # 極重要：避免被誤認為代名詞 his
+    
+    # 製造/科技業系統
+    "erp": "enterprise resource planning",
+    "scm": "supply chain management",
+    "crm": "customer relationship management",
+    "eda": "electronic design automation",
+    "plm": "product lifecycle management",
+    "mes": "manufacturing execution",
+    "pos": "point of sale",
+    "scada": "supervisory control and data acquisition",
+    
+    # 產業縮寫
+    "aiot": "ai iot",
+    "ngo": "non governmental organization",
+    "fmcg": "fast moving consumer goods",
+    "ems": "electronics manufacturing services",
+    "pcb": "printed circuit board",
+    "ic": "integrated circuit"
 }
 CUSTOMER_FEATURES_DB = {
-    "北榮":["medical", "records", "HIS system"],
-    "佳朋":["medical", "records", "HIS system"],
-    "億康":["medical", "records", "HIS system"],
-    "寬御":["medical", "records", "HIS system"],
-    "台睿":["medical", "records", "HIS system"],
-    "精睿":["medical", "records", "HIS system"],
-    "攝影人":["medical", "records", "HIS system"]
+    "VGH北榮":["Medical", "In-house Development", "HIS system"],
+    "CMU中國附醫":["Medical Center", "AIoT Healthcare Dev", "HIS Management"],
+    "KLF 光隆":["Textile Manufacturing", "Digital Transformation IT", "ERP & SCM System"],
+    "WVT 世展會":["NGO", "Cloud IT Operation", "Donor CRM System"],
+    "REA 瑞昱":["Semiconductor IC Design", "High-Performance R&D IT", "EDA & PLM IS"],
+    "FIC 大眾":["Electronics Manufacturing", "System Integration IT", "MES & ERP System"],
+    "AXI 艾訊":["Industrial PC", "Embedded IT Dev", "ERP Management"],
+    "TPT 尖點":["PCB Component", "Smart Factory IT", "MES System"],
+    "BDD 閃銀":["Fintech", "Big Data AI Dev", "Risk Assessment IS"],
+    "ADV 研華":["Industrial IoT", "AIoT In-house Dev", "Global ERP IS"],
+    "STT 思達":["Semiconductor Testing", "Automated IT", "Data Analytics IS"],
+    "CTN 科締納":["Networking IC", "In-house R&D IT", "EDA System"],
+    "TUE 泰詠":["EMS Manufacturing", "Production IT", "MES & SCM IS"],
+    "TSN 泰山":["Food & Beverage", "Enterprise IT Operation", "ERP & POS System"],
+    "TYG 東陽":["Auto Parts", "Smart Manufacturing IT", "Global SCM System"],
+    "WWU 旺旺":["FMCG Food", "Enterprise IT Operation", "Global ERP IS"],
+    "MFMA 海能風電":["Renewable Energy", "Infrastructure IT", "SCADA Monitoring IS"],
+    "CGM 長庚科技":["Medical Tech", "Healthcare IT Dev", "Smart HIS System"]
 }
 
 def is_chinese(text):
@@ -34,7 +67,7 @@ def translate_english(text):
         if translated_text:return translated_text
         else:return text
     except Exception as e:
-        print(f"[error]翻譯服務異常:{e}")
+        sys.stderr.write(f"[error]翻譯服務異常:{e}")
         return text
 
 def preprocess_text(text):
