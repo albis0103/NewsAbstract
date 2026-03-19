@@ -18,6 +18,7 @@ python keyvector_model.py
 # 2. Set environment variables (Ensure n8n can access APIs)
 $env:GEMINI_API_KEY="YOUR_GEMINI_KEY"
 $env:JINA_API_KEY="YOUR_JINA_KEY"
+$env:NODES_EXCLUDE="[]";
 $env:PYTHONIOENCODING="utf-8"
 # 3. Start n8n
 npx n8n
@@ -32,6 +33,7 @@ python keyvector_model.py
 # 2. Set environment variables
 export GEMINI_API_KEY="YOUR_GEMINI_KEY"
 export JINA_API_KEY="YOUR_JINA_KEY"
+export NODES_EXCLUDE="[]"
 export PYTHONIOENCODING="utf-8"
 
 # 3. Start n8n
