@@ -33,7 +33,6 @@ def call_gemini(prompt, api_key):
     client = genai.Client(api_key=api_key)
     
     try:
-        # 推薦使用 2.0-flash，速度快且對資安摘要效果極佳
         response = client.models.generate_content(
             model='gemini-2.5-flash', 
             contents=prompt
