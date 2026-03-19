@@ -10,13 +10,12 @@ model = KeyedVectors.load("models/fast_model.kv", mmap = 'r')
 sys.stderr.write("load sucess")
 
 SECURITY_WORD_DICTIONARY = {
-    # 資安產品 (你原本的)
     "mde": "microsoft defender endpoint",
     "waf": "web application firewall",
     "edr": "endpoint detection response",
     
     # 醫療業
-    "his": "hospital information", # 極重要：避免被誤認為代名詞 his
+    "his": "hospital information", 
     
     # 製造/科技業系統
     "erp": "enterprise resource planning",
