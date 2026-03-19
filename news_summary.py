@@ -53,7 +53,11 @@ def generate_summary(url, api_key):
 
 1. [標題]：簡潔標記新聞核心重點。
 
-2. [關鍵字]：取 5-8 個最能代表本文精髓的關鍵字（Hashtag），英文呈現
+2. [關鍵字]：提取 5-8 個最能代表本文精髓的英文關鍵字。
+   - 規範：必須全部小寫。
+   - 規範：禁止使用複合詞（例如：不可使用 'SessionHijacking'，需拆解為 'session, hijacking'）。
+   - 規範：使用模型常見的基礎單詞（例如：security, attack, medical, network, vulnerability）。
+   - 格式：僅以逗號分隔，不要 Hashtag。
 
 3. [發生時間]：
    - 正式發布：(標註具體日期)
