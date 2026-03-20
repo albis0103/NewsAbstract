@@ -19,4 +19,4 @@ jobs:
       - name: Push to Azure DevOps
         run: |
           # 這裡使用你存好的 Secret，不會洩漏 Token
-          git push --mirror https://jasonwu:${{ secrets.AZURE_DEVOPS_PAT }}@dev.azure.com/FreedomSystems/fds-sec-team/_git/NewsAbstract
+          git push --mirror https://jasonwu:${{ secrets.AZURE_DEVOPS_PAT }}@dev.azure.com/FreedomSystems/fds-secop-team/_git/NewsAbstract
