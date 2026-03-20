@@ -1,0 +1,20 @@
+name: Sync to Azure DevOps
+
+on:
+  push:
+    branches:
+      - main  # 當你 push 到 main 分支時觸發
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # 抓取完整的歷史紀錄以進行鏡像同步
+
+      - name: Push to Azure DevOps
+        run: |
+          # 這裡使用你存好的 Secret，不會洩漏 Token
+          git push --mirror https://x-token-auth:${{ secrets.AZURE_DEVOPS_PAT }}@dev.azure.com/FreedomSystems/fds-sec-team/_git/NewsAbstract
