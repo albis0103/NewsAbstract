@@ -2,21 +2,23 @@ trigger:
 - main
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: 'ubuntu-latest' # 使用 Ubuntu 虛擬機來跑 git 指令
 
 steps:
-- task: UsePythonVersion@0
-  inputs:
-    versionSpec: '3.10'
-  displayName: 'Install Python'
+# 1. 允許 Pipeline 使用暫時性的 Token 來存取 Repo
+- checkout: self
+  persistCredentials: true
 
+# 2. 執行同步指令
 - script: |
-    python -m pip install --upgrade pip
-    pip install -r requirements.txt
-  displayName: 'Install dependencies'
+    # 避免 Git 報錯，設定臨時的使用者資訊
+    git config --global user.email "jasonhappywu@gmail.com"
+    git config --global user.name "Wu Shengle"
 
-# 如果你有寫單元測試，可以在這裡加入
-- script: |
-    pytest
-  displayName: 'Run Tests'
-  condition: succeeded()
+    # 新增 Azure DevOps 的 Repo 作為遠端目標
+    # 注意：將下面的 URL 換成你真正的 Azure Repo 網址
+    git remote add destination https://$(System.AccessToken)@dev.azure.com/FreedomSystems/fds-sec-team/_git/NewsAbstract
+
+    # 強制推送 main 分支到 Azure
+    git push destination main --force
+  displayName: '同步 GitHub 到 Azure DevOps'
