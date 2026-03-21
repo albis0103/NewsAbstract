@@ -71,7 +71,7 @@ def generate_summary(url, api_key):
 
 6. [重點整理]：(整段式表達, max:400字內)
 
-7. [新聞網址]：(放入來源連結, 整段式表達, max:160字)
+7. [新聞網址]：(放入來源連結)
     """
     full_text = f"{prompt}\n\n以下是新聞全文：\n{article_text}"
     return call_gemini(full_text, api_key)
