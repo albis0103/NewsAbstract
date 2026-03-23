@@ -10,6 +10,31 @@ In a modern SOC (Security Operations Center), analysts are overwhelmed by daily 
 
 *　**Prioritized Reporting**: Generates a ranked list of affected customers to reduce Mean Time to Acknowledge (MTTA).
 
+## System Architecture &　Workflow
+The following Sequence Diagram accurately reflects the current n8n implementation, including external command executions and data branching:
+```
+sequenceDiagram
+    autonumber
+    participant UI as Analyzer UI (HTML)
+    participant n8n as n8n Webhook
+    participant Py as SecOps Core Engine (Python)
+    participant Res as Response Node (HTML)
+
+    UI->>n8n: POST News URL
+    n8n->>Py: Execute newsabstract.py --url [URL]
+    
+    activate Py
+    Note over Py: (Internal Pipeline)
+    Py->>Py: 1. Fetch Content (via Jina Reader API)
+    Py->>Py: 2. Generate News Summary (news_summary.py, via Gemini API)
+    Py->>Py: 3. Extract Keywords & Match (silimarity.py, via Word2vec and cosine similarity)
+    Py-->>n8n: Return Integrated Analysis (Full JSON)
+    deactivate Py
+
+    n8n-->>Res: Pass Analysis Data
+    Res-->>Res: Render Dashboard (Top 20 Customers)
+    ```
+
 ## 1. Environment Setup
 Ensure that **Python 3.10+** and **Node.js** are installed. From the project root directory, run:
 
