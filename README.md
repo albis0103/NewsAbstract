@@ -47,7 +47,7 @@ Windows (PowerShell)
 PowerShell
 ```
 # 1. Execute model initialization (Absolute path required)
-cd "/[YOUR_PATH]/NewsAbstract"
+cd "/[YOUR_PATH]/NewsAbstract/news-analyzer-py"
 python keyvector_model.py
 # 2. Set environment variables (Ensure n8n can access APIs)
 $env:GEMINI_API_KEY="YOUR_GEMINI_KEY"
@@ -61,7 +61,7 @@ macOS / Linux (Terminal)
 Bash
 ```
 # 1. Execute model initialization (Absolute path)
-cd "/[YOUR_PATH]/NewsAbstract"
+cd "/[YOUR_PATH]/NewsAbstract/news-analyzer-py"
 python keyvector_model.py
 
 # 2. Set environment variables
