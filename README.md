@@ -1,6 +1,15 @@
 
 # SecOps News Analysis System
 
+## Overview
+In a modern SOC (Security Operations Center), analysts are overwhelmed by daily security news. This project automates the "News-to-Impact" pipeline:
+
+* **Automated Summarization**: Extracts core technical values using LLM.
+
+*　**Semantic Correlation**: Uses NLP (Word2Vec) to match news keywords with customer profiles, going beyond simple keyword matching.
+
+*　**Prioritized Reporting**: Generates a ranked list of affected customers to reduce Mean Time to Acknowledge (MTTA).
+
 ## 1. Environment Setup
 Ensure that **Python 3.10+** and **Node.js** are installed. From the project root directory, run:
 
