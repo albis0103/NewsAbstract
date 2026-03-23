@@ -12,7 +12,7 @@ In a modern SOC (Security Operations Center), analysts are overwhelmed by daily 
 
 ## System Architecture &　Workflow
 The following Sequence Diagram accurately reflects the current n8n implementation, including external command executions and data branching:
-```
+
 sequenceDiagram
     autonumber
     participant UI as Analyzer UI (HTML)
@@ -33,7 +33,7 @@ sequenceDiagram
 
     n8n-->>Res: Pass Analysis Data
     Res-->>Res: Render Dashboard (Top 20 Customers)
-    ```
+    
 
 ## 1. Environment Setup
 Ensure that **Python 3.10+** and **Node.js** are installed. From the project root directory, run:
