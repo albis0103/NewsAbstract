@@ -3,7 +3,7 @@
   "nodes": [
     {
       "parameters": {
-        "command": "=\"C:\\Users\\jasonwu\\Desktop\\Internship\\venv\\Scripts\\python.exe\" \"C:\\Users\\jasonwu\\Desktop\\Internship\\NewsAbstract\\news_summary.py\" \"{{$json.query.NewsUrl}}\""
+        "command": "=\"C:\\Users\\jasonwu\\Desktop\\Internship\\venv\\Scripts\\python.exe\" \"C:\\Users\\jasonwu\\Desktop\\Internship\\NewsAbstract\\news-analyzer-py\\news_summary.py\" \"{{$json.query.NewsUrl}}\""
       },
       "type": "n8n-nodes-base.executeCommand",
       "typeVersion": 1,
@@ -42,7 +42,7 @@
     },
     {
       "parameters": {
-        "command": "=\"C:\\Users\\jasonwu\\Desktop\\Internship\\venv\\Scripts\\python.exe\" \"C:\\Users\\jasonwu\\Desktop\\Internship\\NewsAbstract\\similarity.py\" \"{{ $json.keywords}}\""
+        "command": "=\"C:\\Users\\jasonwu\\Desktop\\Internship\\venv\\Scripts\\python.exe\" \"C:\\Users\\jasonwu\\Desktop\\Internship\\NewsAbstract\\news-analyzer-py\\similarity.py\" \"{{ $json.keywords}}\""
       },
       "type": "n8n-nodes-base.executeCommand",
       "typeVersion": 1,
@@ -154,7 +154,7 @@
     "binaryMode": "separate",
     "availableInMCP": false
   },
-  "versionId": "97eec12f-d3be-4155-ae4d-fb633b3780c6",
+  "versionId": "b3c4696c-e007-46d8-8d5b-6fc73c4ebcc0",
   "meta": {
     "instanceId": "afeea622413404019f2fdf4057c62dad96b376487cbae0e91d7c8d939581112f"
   },

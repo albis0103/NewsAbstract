@@ -4,9 +4,12 @@ import sys
 import re
 from deep_translator import GoogleTranslator
 import json
+import os
 
 sys.stderr.write("wait for loading word2vec model")
-model = KeyedVectors.load("models/fast_model.kv", mmap = 'r')
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+model_path = os.path.join(BASE_DIR, "models", "fast_model.kv")
+model = KeyedVectors.load(model_path, mmap = 'r')
 sys.stderr.write("load sucess")
 
 SECURITY_WORD_DICTIONARY = {
