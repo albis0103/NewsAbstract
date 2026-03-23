@@ -1,0 +1,163 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "command": "=\"C:\\Users\\jasonwu\\Desktop\\Internship\\venv\\Scripts\\python.exe\" \"C:\\Users\\jasonwu\\Desktop\\Internship\\NewsAbstract\\news_summary.py\" \"{{$json.query.NewsUrl}}\""
+      },
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        432,
+        0
+      ],
+      "id": "ba5478b9-fa38-4afc-b64c-5432e82479c4",
+      "name": "Execute Command"
+    },
+    {
+      "parameters": {
+        "jsCode": "// 取得上一個 Python 節點吐出來的文字 (假設放在 stdout 欄位)\nlet text = $input.first().json.stdout ;\n\n// 使用 JavaScript 把 * 和 # 替換成空字串\nlet cleanText = text.replace(/[*#_><]/g, '');\n\n// 把乾淨的文字輸出給下一個節點\nreturn {\n  json: {\n    clean_summary: cleanText\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        640,
+        0
+      ],
+      "id": "a03768d5-5ba8-42d2-ac36-ba8b4416b6c7",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "jsCode": "// 1. 確保抓到你輸入的 clean_summary\nconst text = $input.first().json.clean_summary || \"\";\n\n// 2. 準確框出 [關鍵字]： 到 3. [發生時間]： 中間的所有內容\n// 使用 \\s* 容忍任何數量的空白與換行\nconst match = text.match(/\\[關鍵字\\]：([\\s\\S]*?)3\\.\\s*\\[發生時間\\]/);\n\nlet extractedKeywords = \"\";\n\nif (match && match[1]) {\n    // 3. 把抓出來的內容，變成完美的逗號分隔字串\n    extractedKeywords = match[1]\n        .split('\\n')                  // 步驟A：遇到換行就切開，變成陣列\n        .map(word => word.trim())     // 步驟B：把每個字頭尾的「空白」跟「縮排」都砍掉\n        .filter(word => word !== \"\")  // 步驟C：把切出來的「空字串」過濾掉\n        .join(',');                   // 步驟D：剩下的乾淨關鍵字，用逗號接起來\n}\n\nreturn {\n    keywords: extractedKeywords\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        736,
+        -128
+      ],
+      "id": "59b25f4a-5e4f-447b-89d1-a0d95df677c8",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "command": "=\"C:\\Users\\jasonwu\\Desktop\\Internship\\venv\\Scripts\\python.exe\" \"C:\\Users\\jasonwu\\Desktop\\Internship\\NewsAbstract\\similarity.py\" \"{{ $json.keywords}}\""
+      },
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        960,
+        -128
+      ],
+      "id": "1e746735-1390-4547-b244-02af34fe2d87",
+      "name": "customer similarity"
+    },
+    {
+      "parameters": {
+        "path": "cyber-news-analysis",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        352,
+        -208
+      ],
+      "id": "78e540d8-328a-4f95-a673-987bceb398ae",
+      "name": "Webhook",
+      "webhookId": "64b7dee2-ca06-4a1c-a37f-f34f0ced5c02"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "=<!DOCTYPE html>\n<html lang=\"zh-TW\">\n<head>\n    <meta charset=\"UTF-8\">\n    <title>SecOps 智能情報編輯台</title>\n    <style>\n        :root { --primary: #0078d4; --bg: #f5f7f9; --text: #333; }\n        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); display: flex; gap: 20px; padding: 25px; height: 100vh; margin: 0; box-sizing: border-box; }\n        .main-editor { flex: 3; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); display: flex; flex-direction: column; }\n        h2 { margin-top: 0; font-size: 1.5rem; color: var(--primary); display: flex; align-items: center; gap: 10px; }\n        textarea { flex-grow: 1; width: 100%; padding: 20px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 16px; line-height: 1.7; resize: none; outline: none; transition: border 0.3s; background: #fff; }\n        textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(0,120,212,0.1); }\n        .side-panel { flex: 1; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); min-width: 300px; display: flex; flex-direction: column; }\n        h3 { margin-top: 0; border-bottom: 2px solid var(--bg); padding-bottom: 10px; }\n        .customer-card { margin-bottom: 20px; }\n        .label-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-weight: 600; }\n        .progress-container { background: #e5e7eb; border-radius: 10px; height: 12px; width: 100%; overflow: hidden; }\n        .progress-fill { background: linear-gradient(90deg, #0078d4, #00bcf2); height: 100%; border-radius: 10px; transition: width 1.5s cubic-bezier(0.1, 0, 0.2, 1); }\n        .copy-btn { margin-top: 20px; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; transition: opacity 0.2s; }\n        .copy-btn:hover { opacity: 0.9; }\n    </style>\n</head>\n<body>\n    <div class=\"main-editor\">\n        <h2> 資安摘要手動校對</h2>\n        <textarea id=\"summaryText\">{{ $node[\"Code in JavaScript\"].json.clean_summary }}</textarea>\n        <button class=\"copy-btn\" onclick=\"copyContent()\"> 複製摘要到剪貼簿</button>\n    </div>\n\n<div class=\"side-panel\">\n    <h3> 客戶關聯度分析 (Top 20)</h3>\n    <div id=\"chart-area\">\n        {{ \n            (function() {\n                try {\n                    // 1. 抓取 Python 輸出的 stdout\n                    let raw = $node[\"customer similarity\"].json.stdout;\n                    if (!raw) return \"<p>等待分析數據...</p>\";\n                    \n                    // 2. 清理 JSON (預防 Python 的 print 雜訊)\n                    if (raw.includes(\"{\")) {\n                        raw = raw.substring(raw.indexOf(\"{\"), raw.lastIndexOf(\"}\") + 1);\n                    }\n\n                    const scores = JSON.parse(raw);\n\n                    // 3. 排序與篩選：將物件轉為陣列 -> 降序排序 -> 取前 20 名\n                    const sortedScores = Object.entries(scores)\n                        .sort((a, b) => b[1] - a[1]) // 由大到小排序\n                        .slice(0, 20);              // 只取前 20 筆\n\n                    // 4. 生成 HTML 內容\n                    return sortedScores.map(([name, score]) => `\n                        <div class=\"customer-card\">\n                            <div class=\"label-row\">\n                                <span>${name}</span>\n                                <span style=\"color:${score > 0.5 ? '#00ff88' : '#aaa'}\">\n                                    ${(score * 100).toFixed(2)}%\n                                </span>\n                            </div>\n                            <div class=\"progress-container\">\n                                <div class=\"progress-fill\" style=\"width: ${score * 100}%; \n                                     background: ${score > 0.5 ? 'linear-gradient(90deg, #00c6ff, #00ff88)' : '#555'}\">\n                                </div>\n                            </div>\n                        </div>\n                    `).join('');\n                } catch (e) {\n                    return `<div style=\"color:#ff4444; padding:10px; border:1px solid #440000;\">\n                                 解析失敗：${e.message}<br>\n                                <small>原始內容：${$node[\"customer similarity\"].json.stdout}</small>\n                            </div>`;\n                }\n            })()\n        }}\n    </div>\n</div>\n    <p style=\"font-size: 12px; color: #999; margin-top: auto;\">數據來源：Word2Vec 語義相似度模型</p>\n</div>\n    <script>\n        function copyContent() {\n            const text = document.getElementById('summaryText').value;\n            navigator.clipboard.writeText(text).then(() => {\n                alert('摘要已複製！');\n            });\n        }\n    </script>\n</body>\n</html>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        1184,
+        16
+      ],
+      "id": "c41a76a5-b8a0-4e17-8c8c-ea02ca49562b",
+      "name": "Respond to Webhook"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Execute Command": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "customer similarity",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Execute Command",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "customer similarity": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "97eec12f-d3be-4155-ae4d-fb633b3780c6",
+  "meta": {
+    "instanceId": "afeea622413404019f2fdf4057c62dad96b376487cbae0e91d7c8d939581112f"
+  },
+  "id": "dbmKP7E1pyx1fYLN",
+  "tags": []
+}
