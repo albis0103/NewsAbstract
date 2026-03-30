@@ -1,8 +1,0 @@
-mongodb+srv://jasonwu:jason0103@cluster0.xvreqja.mongodb.net/?appName=Cluster0
-jasonwu
-Aa131708407
-
-$env:DB_PASSWORD="jason0103"; ./mvnw clean spring-boot:run
-
-news_testing_lab url:
-https://default14a8bf89aa9c40839bdf9949b3c810.01.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/317a0129a1494f73a2692fd2f521a903/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=beT_D2oK4HzlgJm5t6CTuGN1LlT_kcoIYyrnMT5BjPg
