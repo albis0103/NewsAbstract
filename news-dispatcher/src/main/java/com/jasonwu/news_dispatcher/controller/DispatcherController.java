@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.jasonwu.news_dispatcher.service.DispatcherService;
 
 @RestController
-@RequestMapping(value = "/app/v1", consumes = "text/plain")
+@RequestMapping(value ="/app/v1", consumes = "text/plain")
 public class DispatcherController {
     private DispatcherService dispatcherService;
     public DispatcherController(DispatcherService dispatcherService){

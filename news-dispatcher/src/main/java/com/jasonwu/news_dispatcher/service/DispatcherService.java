@@ -1,10 +1,13 @@
 package com.jasonwu.news_dispatcher.service;
 
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.HttpEntity;
 
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 import org.springframework.stereotype.Service;
@@ -26,19 +29,20 @@ public class DispatcherService {
                 System.out.println("MongoDB目前無顧客webhook url");
                 return;
             }
-            String safetext = plaintext.replace("\"", "\\\"").replace("\n", "\\n");
-            String teamsPayload = "{\"text\": \"" + safetext + "\"}";
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_JSON);
-            HttpEntity<String> request = new HttpEntity<>(teamsPayload, headers);
-
-            for(Customer customer:customers){
+            for(Customer customer : customers){
                 try {
-                    restTemplate.postForObject(customer.getWebhookUrl(), request, String.class);
+                    System.out.println("正在發送到網址: " + customer.getWebhookUrl());
+                    Map<String, String> payload = new HashMap<>();
+                    HttpHeaders headers = new HttpHeaders();
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                    headers.set("User-Agent", "Mozilla/5.0");
+                    HttpEntity<Map<String, String>> entity = new HttpEntity<>(payload, headers);
+                    restTemplate.postForEntity(customer.getWebhookUrl(), entity, String.class);
                     System.out.println("sended success:" + customer.getName());
                 } catch (Exception e) {
-                    System.out.println("Send:" + customer.getName() + "error:" + e.getMessage());
+                    System.out.println("send" + customer.getName() + "error:" + e.getMessage());
                 }
+                
             }
         }
     }       

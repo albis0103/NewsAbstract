@@ -5,15 +5,15 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection  = "webhooks")
 public class Customer {
     @Id
-    private String Id;
+    private String id;
     private String name;
     private String webhookUrl;
     // getter and setter
     public String getId() {
-        return Id;
+        return id;
     }
     public void setId(String id) {
-        Id = id;
+        this.id = id;
     }
     public String getName() {
         return name;
