@@ -8,7 +8,7 @@ In a modern SOC (Security Operations Center), analysts are overwhelmed by daily 
 
 * **Semantic Correlation**: Uses NLP (Word2Vec) to match news keywords with customer profiles, going beyond simple keyword matching.
 
-* **Prioritized Reporting**: Generates a ranked list of affected customers to reduce Mean Time to Acknowledge (MTTA).
+* **Prioritized Reporting**: Generates a ranked list of affected customers to reduce Mean Time to Acknowledge .
 
 ## System Architecture &　Workflow
 The following Sequence Diagram accurately reflects the current n8n implementation, including external command executions and data branching:

@@ -1,4 +1,4 @@
-package jasonwu.com.news_dispatcher;
+package com.jasonwu.news_dispatcher;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
