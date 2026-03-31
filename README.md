@@ -103,13 +103,12 @@ After cloning this project, please ensure your development environment meets the
 ### 1. Clone Project and Environment Variables Setup
 After cloning the project, go to `src/main/resources/application.properties` to configure your database and mailing environment:
 
-```properties
+properties
+```
 server.port=8081
-
 # --- MongoDB Settings ---
 # Note: Spring Boot 3.x must use spring.data.mongodb.uri
 spring.mongodb.uri=mongodb+srv://<Your_Account>:<Your_Password>@cluster0.xxxx.mongodb.net/newsdb?retryWrites=true&w=majority
-
 # --- Email (SMTP) Settings (Using Mailtrap as an example) ---
 spring.mail.host=sandbox.smtp.mailtrap.io
 spring.mail.port=2525
@@ -117,27 +116,31 @@ spring.mail.username=<Mailtrap Username>
 spring.mail.password=<Mailtrap Password>
 spring.mail.properties.mail.smtp.auth=true
 spring.mail.properties.mail.smtp.starttls.enable=true
+```
+
 ### 2. Create Test Data (MongoDB)
 Please create a collection named webhooks in MongoDB and execute the following via MongoDB Compass _MONGOSH:
+```
 use newsdb;
 db.webhooks.insertOne({
     "name": "Test Client A",
     "email": "your_test_email@gmail.com",
     "webhookUrl": "https://Your_Teams_Webhook_URL"
 });
+```
 
 ### 3.Start Project
 Run the following command in the project root directory:
+```
 ./mvnw spring-boot:run
-
+```
 
 ### 4.Test
+```
 curl -X POST http://localhost:8081/api/v1/send
-
 -H "Content-Type: text/plain;charset=UTF-8"
-
 -d "🚨 [Security Alert] Latest zero-day vulnerability detected. Please take precautions!"
-
+```
 
 ### Troubleshooting FAQ
 
