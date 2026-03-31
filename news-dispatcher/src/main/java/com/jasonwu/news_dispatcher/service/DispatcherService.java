@@ -27,7 +27,7 @@ public class DispatcherService {
             return;
         }
         for(Customer customer : customers){
-            if(customer.getEmail()!= null && !customer.getEmail().isEmpty()){
+            if(customer.getEmail() != null && !customer.getEmail().isEmpty()){
                 try {
                     System.out.println("preparing send email to :" + customer.getName());
                     SimpleMailMessage message = new SimpleMailMessage();
@@ -40,7 +40,7 @@ public class DispatcherService {
                     System.out.println("send to "+  customer.getName() + "ERROR" + e.getMessage());
                 }
             }else{
-                System.out.println("⏭跳過 " + customer.getName() + " (未設定 Email)");
+                System.out.println("跳過 " + customer.getName() + " (未設定 Email)");
             }
         }
         
