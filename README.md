@@ -128,6 +128,14 @@ db.webhooks.insertOne({
     "webhookUrl": "https://Your_Teams_Webhook_URL"
 });
 ```
+or mutually insert document:
+```
+{
+    "name": "Test Client A",
+    "email": "your_test_email@gmail.com",
+    "webhookUrl": "https://Your_Teams_Webhook_URL"
+}
+```
 
 ### 3.Start Project
 Run the following command in the project root directory:
