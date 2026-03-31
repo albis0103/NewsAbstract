@@ -7,5 +7,4 @@ import com.jasonwu.news_dispatcher.model.Customer;
 @Repository
 public interface CustomerRepository extends MongoRepository<Customer, String> {
 
-    
 }

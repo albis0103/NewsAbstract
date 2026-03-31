@@ -80,3 +80,70 @@ Official Deployment: Click Publish in the top-right corner (ensure the toggle tu
 ## 4. Launch Frontend Tools
 Locate Analyzer.html (webhook.html) in the project folder.<br>
 Open it directly (Recommended: Save as a browser bookmark).<br>
+
+# Security News Dispatcher (Security News Distribution System)
+
+This is a B2B automated security news distribution system developed based on **Spring Boot**. It is primarily used to fetch client lists from **MongoDB** and supports real-time delivery of the latest security threat notifications to corporate clients via **Email (SMTP)** and **Teams Webhook**.
+
+---
+
+## 🛠️ Prerequisites
+
+After cloning this project, please ensure your development environment meets the following requirements:
+
+* **Java 17** or above
+* **Maven** (Project includes `mvnw` wrapper)
+* **MongoDB Atlas** Cloud database account
+* **SMTP Server** (It is recommended to use [Mailtrap](https://mailtrap.io/) for Sandbox testing during the development phase)
+
+---
+
+
+
+### 1. Clone Project and Environment Variables Setup
+After cloning the project, go to `src/main/resources/application.properties` to configure your database and mailing environment:
+
+```properties
+server.port=8081
+
+# --- MongoDB Settings ---
+# Note: Spring Boot 3.x must use spring.data.mongodb.uri
+spring.mongodb.uri=mongodb+srv://<Your_Account>:<Your_Password>@cluster0.xxxx.mongodb.net/newsdb?retryWrites=true&w=majority
+
+# --- Email (SMTP) Settings (Using Mailtrap as an example) ---
+spring.mail.host=sandbox.smtp.mailtrap.io
+spring.mail.port=2525
+spring.mail.username=<Mailtrap Username>
+spring.mail.password=<Mailtrap Password>
+spring.mail.properties.mail.smtp.auth=true
+spring.mail.properties.mail.smtp.starttls.enable=true
+### 2. Create Test Data (MongoDB)
+Please create a collection named webhooks in MongoDB and execute the following via MongoDB Compass _MONGOSH:
+use newsdb;
+db.webhooks.insertOne({
+    "name": "Test Client A",
+    "email": "your_test_email@gmail.com",
+    "webhookUrl": "https://Your_Teams_Webhook_URL"
+});
+
+### 3.Start Project
+Run the following command in the project root directory:
+./mvnw spring-boot:run
+
+
+### 4.Test
+curl -X POST http://localhost:8081/api/v1/send
+
+-H "Content-Type: text/plain;charset=UTF-8"
+
+-d "🚨 [Security Alert] Latest zero-day vulnerability detected. Please take precautions!"
+
+
+### Troubleshooting FAQ
+
+Q: The program log is stuck at "preparing send email to..."?<br>
+Reason: Usually, message.setTo() or mailsender.send(message) is missing.<br>
+
+
+Q: It shows "sent successfully," but I didn't receive the email in my inbox?<br>
+Solution: The development environment uses Mailtrap; emails are intercepted in ththe Mailtrap web dashboard and will not be delivered to real mailboxes.<br>

@@ -17,7 +17,7 @@ public class DispatcherController {
     @PostMapping
     public String receiveAndDispatcher(@RequestBody String plaintext){
         System.out.println("收到新的通報，準備從資料庫撈取客戶名單並群發...");
-        dispatcherService.sentToAllCustomer(plaintext);
+        dispatcherService.sendToAllCustomer(plaintext);
         return"通報已成功進入群發序列！";
     }
 }
