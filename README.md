@@ -98,6 +98,28 @@ After cloning this project, please ensure your development environment meets the
 
 ---
 
+```mermaid
+graph TD
+    %% External Trigger
+    n8n[n8n input \n news summary] -->|1. Execute Command| JAR[Execute Java JAR <br>JVM Starts<br/>Tomcat listens on :8081]
+    n8n -->|2. HTTP POST /app/v1| Controller
+
+    subgraph Spring_Boo [Spring Boot backend]
+        Controller[Controller] -->|Call dispatcherService.sendToAllCustomer| Service[Service]
+        Service -->|CRUD Request<br>customerRepository.findAll| Repo[CustomerRepository]
+        Repo -.->|Mapping| Entity[Customer Model]
+    end
+    
+    %% External Integrations
+    Repo <-->|Return List<br>list customers| MongoDB[(MongoDB Atlas)]
+    Service -->|Dispatch Mail<br>Inital SimpleMailMessage<br>mail.Sender.send message| SMTP[SMTP]
+
+    %% Styling
+    style MongoDB fill:#47A248,color:#fff
+    style SMTP fill:#150E56,color:#fff
+
+    
+```
 
 
 ### 1. Clone Project and Environment Variables Setup
