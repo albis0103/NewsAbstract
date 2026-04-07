@@ -7,6 +7,10 @@ import json
 import os
 from pymongo import MongoClient
 
+
+import sys
+sys.stdout.reconfigure(encoding='utf-8')
+
 sys.stderr.write("wait for loading word2vec model")
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 model_path = os.path.join(BASE_DIR, "models", "fast_model.kv")
@@ -48,7 +52,15 @@ def get_customer_feature():
     for doc in collection.find():
         name = doc.get('name', 'Unknown')
         feature = doc.get('feature')
-        customer_feature[name] = [f.strip() for f in feature.split(',')]
+        if not feature:
+            # 如果沒有設定 feature，給空陣列
+            customer_feature[name] = []
+        elif isinstance(feature, list):
+            # 如果是 Java 存入的 List 格式，直接使用
+            customer_feature[name] = feature
+        elif isinstance(feature, str):
+            # 如果是舊資料的純字串格式，才進行 split 切割
+            customer_feature[name] = [f.strip() for f in feature.split(',')]
     return customer_feature
 
 def is_chinese(text):
