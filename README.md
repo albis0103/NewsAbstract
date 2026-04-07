@@ -1,5 +1,57 @@
+# SecOps News System
+```
+graph TB
+    subgraph Client_Interface [Client View]
+        UI[Analyzer UI - HTML/JS]
+        N8N{n8n Workflow Engine}
+    end
 
-# SecOps News Analysis System
+    subgraph Python_Analyzer [news-analyzer-py: SecOps Core]
+        PY_EXE[newsabstract.py]
+        SUM[news_summary.py - Gemini API]
+        SIM[similarity.py - Word2vec]
+        
+        PY_EXE --> SUM
+        PY_EXE --> SIM
+    end
+
+    subgraph Java_Dispatcher [news-dispatcher: Spring Boot Engine]
+        JAR[Executable JAR <br>- Tomcat :8081]
+        SVC[Dispatcher<br>Service]
+        RP[CustomerRepository]
+
+
+        CTL[Dispatcher<br>Controller]
+        CTL --> SVC
+        SVC --> RP
+    end
+
+    %% Data & External Services
+    JINA((Jina Reader API))
+    DB[(MongoDB Atlas)]
+    SMTP[SMTP Service - Outlook]
+    GEMINI((Gemini<br>LLM))
+
+    %% Main Logic Flow
+    UI -->|POST URL| N8N
+    N8N <-->|Execute & Return JSON| PY_EXE
+    PY_EXE -.->|Fetch Content| JINA
+    SUM -.-> GEMINI
+    N8N -->|1. java -jar| JAR
+    N8N -->|2. POST /app/v1| CTL
+    
+    RP <-->|Query Customers| DB
+    SVC -->|Send Alerts| SMTP
+
+    %% Styling
+    style N8N fill:#ff6600,color:#fff
+    style Python_Analyzer fill:#3776ab,color:#fff
+    style Java_Dispatcher fill:#6db33f,color:#fff
+    style DB fill:#47A248,color:#fff
+    style SMTP fill:#0078d4,color:#fff
+```
+
+# SecOps News Analysiser
 
 ## Overview
 In a modern SOC (Security Operations Center), analysts are overwhelmed by daily security news. This project automates the "News-to-Impact" pipeline:
