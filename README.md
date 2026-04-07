@@ -232,3 +232,5 @@ Reason: Usually, message.setTo() or mailsender.send(message) is missing.<br>
 
 Q: It shows "sent successfully," but I didn't receive the email in my inbox?<br>
 Solution: The development environment uses Mailtrap; emails are intercepted in ththe Mailtrap web dashboard and will not be delivered to real mailboxes.<br>
+Q:This entire time, n8n was throwing that confusing "domain" error simply because the specific Python virtual environment it's calling doesn't have the pymongo package installed.<br>
+Ans:"C:\Users\jasonwu\Desktop\Internship\venv\Scripts\python.exe" -m pip install pymongo dnspython<br>
