@@ -39,26 +39,7 @@ SECURITY_WORD_DICTIONARY = {
     "pcb": "printed circuit board",
     "ic": "integrated circuit"
 }
-CUSTOMER_FEATURES_DB = {
-    "VGH北榮":["Medical", "In-house Development", "HIS system"],
-    "CMU中國附醫":["Medical Center", "AIoT Healthcare Dev", "HIS Management"],
-    "KLF 光隆":["Textile Manufacturing", "Digital Transformation IT", "ERP & SCM System"],
-    "WVT 世展會":["NGO", "Cloud IT Operation", "Donor CRM System"],
-    "REA 瑞昱":["Semiconductor IC Design", "High-Performance R&D IT", "EDA & PLM IS"],
-    "FIC 大眾":["Electronics Manufacturing", "System Integration IT", "MES & ERP System"],
-    "AXI 艾訊":["Industrial PC", "Embedded IT Dev", "ERP Management"],
-    "TPT 尖點":["PCB Component", "Smart Factory IT", "MES System"],
-    "BDD 閃銀":["Fintech", "Big Data AI Dev", "Risk Assessment IS"],
-    "ADV 研華":["Industrial IoT", "AIoT In-house Dev", "Global ERP IS"],
-    "STT 思達":["Semiconductor Testing", "Automated IT", "Data Analytics IS"],
-    "CTN 科締納":["Networking IC", "In-house R&D IT", "EDA System"],
-    "TUE 泰詠":["EMS Manufacturing", "Production IT", "MES & SCM IS"],
-    "TSN 泰山":["Food & Beverage", "Enterprise IT Operation", "ERP & POS System"],
-    "TYG 東陽":["Auto Parts", "Smart Manufacturing IT", "Global SCM System"],
-    "WWU 旺旺":["FMCG Food", "Enterprise IT Operation", "Global ERP IS"],
-    "MFMA 海能風電":["Renewable Energy", "Infrastructure IT", "SCADA Monitoring IS"],
-    "CGM 長庚科技":["Medical Tech", "Healthcare IT Dev", "Smart HIS System"]
-}
+
 def get_customer_feature():
     client = MongoClient('mongodb+srv://jasonwu:jason0103@cluster0.xvreqja.mongodb.net/newsdb?authSource=admin&retryWrites=true&w=majority')
     db = client['newsdb']
