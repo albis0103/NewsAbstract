@@ -1,5 +1,5 @@
 # SecOps News System
-```
+```mermaid
 graph TB
     subgraph Client_Interface [Client View]
         UI[Analyzer UI - HTML/JS]
