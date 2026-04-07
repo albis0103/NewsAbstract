@@ -1,7 +1,7 @@
 package com.jasonwu.news_dispatcher.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-
+import java.util.List;
 @Document(collection  = "webhooks")
 public class Customer {
     @Id
@@ -9,6 +9,13 @@ public class Customer {
     private String name;
     private String webhookUrl;
     private String email;
+    private List<String> feature;
+    public List<String> getFeature() {
+        return feature;
+    }
+    public void setFeature(List<String> feature) {
+        this.feature = feature;
+    }
     public String getEmail() {
         return email;
     }

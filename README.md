@@ -6,7 +6,7 @@ graph TB
         N8N{n8n Workflow Engine}
     end
 
-    subgraph Python_Analyzer [news-analyzer-py: SecOps Core]
+    subgraph Python_Analyzer [news-analyzer: python]
         PY_EXE[newsabstract.py]
         SUM[news_summary.py - Gemini API]
         SIM[similarity.py - Word2vec]
@@ -15,7 +15,7 @@ graph TB
         PY_EXE --> SIM
     end
 
-    subgraph Java_Dispatcher [news-dispatcher: Spring Boot Engine]
+    subgraph Java_Dispatcher [news-dispatcher: Spring Boot]
         JAR[Executable JAR <br>- Tomcat :8081]
         SVC[Dispatcher<br>Service]
         RP[CustomerRepository]

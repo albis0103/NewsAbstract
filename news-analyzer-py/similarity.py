@@ -5,6 +5,7 @@ import re
 from deep_translator import GoogleTranslator
 import json
 import os
+from pymongo import MongoClient
 
 sys.stderr.write("wait for loading word2vec model")
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -58,6 +59,16 @@ CUSTOMER_FEATURES_DB = {
     "MFMA 海能風電":["Renewable Energy", "Infrastructure IT", "SCADA Monitoring IS"],
     "CGM 長庚科技":["Medical Tech", "Healthcare IT Dev", "Smart HIS System"]
 }
+def get_customer_feature():
+    client = MongoClient('mongodb+srv://jasonwu:jason0103@cluster0.xvreqja.mongodb.net/newsdb?authSource=admin&retryWrites=true&w=majority')
+    db = client['newsdb']
+    collection = db['webhooks']
+    customer_feature = {}
+    for doc in collection.find():
+        name = doc.get('name', 'Unknown')
+        feature = doc.get('feature')
+        customer_feature[name] = [f.strip() for f in feature.split(',')]
+    return customer_feature
 
 def is_chinese(text):
     # \u4e00-\u9fff 是 Unicode 中的中文範圍
@@ -132,7 +143,8 @@ def main():
         news_keyword = [k.strip() for k in news_input.split(',')]
         
         results = {}
-        for customer_name, features in CUSTOMER_FEATURES_DB.items():
+        db_customer_feature = get_customer_feature()
+        for customer_name, features in db_customer_feature.items():
             final_similarity = calculate_customer_similarity(features, news_keyword, model)
             results[customer_name] = round(float(final_similarity), 4)
         print(json.dumps(results, ensure_ascii=False))
