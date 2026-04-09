@@ -219,9 +219,7 @@ Run the following command in the project root directory:
 
 ### 4.Test
 ```
-curl -X POST http://localhost:8081/api/v1/send
--H "Content-Type: text/plain;charset=UTF-8"
--d "🚨 [Security Alert] Latest zero-day vulnerability detected. Please take precautions!"
+curl.exe -X POST "http://localhost:8081/app/v1" -H "Content-Type: text/plain;charset=UTF-8" -d "Hello World"
 ```
 
 ### Troubleshooting FAQ
