@@ -62,7 +62,7 @@ npx n8n
 
 ## 📚 Documentation (Wiki)
 For advanced configurations, architecture logic, and debugging, please visit our Wiki:
-* [System Architecture & Workflow](https://github.com/albis0103/NewsAbstract.wiki.git)
-* [news-analyzer 架構與說明](https://github.com/albis0103/NewsAbstract.wiki.git)
-* [news-dispatcher 架構與說明](https://github.com/albis0103/NewsAbstract.wiki.git)
-* [Troubleshooting & FAQ](https://github.com/albis0103/NewsAbstract.wiki.git)
+* [System Architecture & Workflow](https://github.com/albis0103/NewsAbstract/wiki/System-Architecture-&-Documentation)
+* [news-analyzer](https://github.com/albis0103/NewsAbstract/wiki/news%E2%80%90analyzer-Architecture-&-Documentation-(Python-Core-Engine))
+* [news-dispatcher](https://github.com/albis0103/NewsAbstract/wiki/news%E2%80%90dispatcher-Architecture-and-Overview-(Java-Dispatch-Backend))
+* [Troubleshooting & FAQ](https://github.com/albis0103/NewsAbstract/wiki/Troubleshooting-&-FAQ)
