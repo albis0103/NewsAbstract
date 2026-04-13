@@ -87,7 +87,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "http://localhost:8081/app/v1",
+        "url": "http://localhost:8080/app/v1",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
@@ -149,7 +149,7 @@
     },
     {
       "parameters": {
-        "command": "=cmd /c \"cd /d \"C:\\Users\\jasonwu\\Desktop\\Internship\\NewsAbstract\\news-dispatcher\\target\" && start /b \"\" \"C:\\Program Files\\Eclipse Adoptium\\jdk-17.0.18.8-hotspot\\bin\\java.exe\" -jar news-dispatcher-0.0.1-SNAPSHOT.jar\""
+        "command": "=powershell -Command \"Start-Process -FilePath 'C:\\Program Files\\Eclipse Adoptium\\jdk-17.0.18.8-hotspot\\bin\\java.exe' -ArgumentList '-jar', 'news-dispatcher-0.0.1-SNAPSHOT.jar' -WorkingDirectory 'C:\\Users\\jasonwu\\Desktop\\Internship\\NewsAbstract\\news-dispatcher\\target' -WindowStyle Hidden\""
       },
       "type": "n8n-nodes-base.executeCommand",
       "typeVersion": 1,
@@ -315,13 +315,13 @@
       ]
     }
   },
-  "active": true,
+  "active": false,
   "settings": {
     "executionOrder": "v1",
     "binaryMode": "separate",
     "availableInMCP": false
   },
-  "versionId": "e16a8d97-ab5b-4aef-9d01-94786400401f",
+  "versionId": "6b00f92e-f23f-4faa-8bb0-977d5e549c2f",
   "meta": {
     "instanceId": "afeea622413404019f2fdf4057c62dad96b376487cbae0e91d7c8d939581112f"
   },
