@@ -1,53 +1,168 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>SecOps 新聞分析系統</title>
+    <title>SecOps Intelligence - New Analysis</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f2f5; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .card { background: white; padding: 40px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 450px; text-align: center; }
-        .logo { font-size: 24px; font-weight: bold; color: #0078d4; margin-bottom: 20px; }
-        input { width: 100%; padding: 12px; margin: 20px 0; border: 2px solid #e1e4e8; border-radius: 8px; font-size: 14px; outline: none; transition: border-color 0.3s; }
-        input:focus { border-color: #0078d4; }
-        button { background: #0078d4; color: white; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; transition: background 0.3s; width: 100%; }
-        button:hover { background: #005a9e; }
-        .footer { margin-top: 20px; font-size: 12px; color: #888; }
+        /* 注入核心 CSS 變數 */
+        :root {
+            --bg-primary: #0f1117;
+            --bg-card: #21242f;
+            --bg-input: #181b24;
+            --border: #2a2e3b;
+            --text-primary: #e8eaed;
+            --text-secondary: #9aa0ab;
+            --text-muted: #6b7280;
+            --accent: #288bc4;
+            --radius: 10px;
+            --radius-sm: 6px;
+            --shadow: 0 8px 30px rgba(0,0,0,0.5);
+            --transition: 0.2s ease;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body { 
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; 
+            background: var(--bg-primary); 
+            color: var(--text-primary);
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+        }
+
+        .card { 
+            background: var(--bg-card); 
+            padding: 40px; 
+            border: 1px solid var(--border);
+            border-radius: var(--radius); 
+            box-shadow: var(--shadow); 
+            width: 100%;
+            max-width: 460px; 
+            text-align: center; 
+        }
+
+        .logo { 
+            font-size: 22px; 
+            font-weight: 700; 
+            color: var(--text-primary); 
+            margin-bottom: 8px; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+
+        input { 
+            width: 100%; 
+            padding: 14px 16px; 
+            margin-bottom: 20px; 
+            background: var(--bg-input);
+            border: 1px solid var(--border); 
+            border-radius: var(--radius-sm); 
+            color: var(--text-primary);
+            font-size: 15px; 
+            font-family: inherit;
+            outline: none; 
+            transition: all var(--transition); 
+        }
+
+        input::placeholder {
+            color: var(--text-muted);
+        }
+
+        input:focus { 
+            border-color: var(--accent); 
+            box-shadow: 0 0 0 3px rgba(40, 139, 196, 0.15);
+        }
+
+        button { 
+            background: linear-gradient(135deg, var(--accent), #1e6fa0); 
+            color: white; 
+            border: none; 
+            padding: 14px 24px; 
+            border-radius: var(--radius-sm); 
+            font-size: 15px; 
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer; 
+            transition: all var(--transition); 
+            width: 100%; 
+        }
+
+        button:hover { 
+            opacity: 0.9; 
+            transform: translateY(-1px);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .footer { 
+            margin-top: 24px; 
+            font-size: 12px; 
+            color: var(--text-muted); 
+        }
     </style>
 </head>
 <body>
     <div class="card">
-        <div class="logo"> SecOps AI Intelligence</div>
-        <p>請輸入要分析的新聞網址</p>
-        <input type="text" id="newsUrl" placeholder="https://www.ithome.com.tw/..." autofocus>
-        <button onclick="analyze()">開始分析並產出摘要</button>
-        <div class="footer"> n8n + Gemini 2.5 Flash 製作 </div>
+        <div class="logo">🛡️ SecOps AI Intelligence</div>
+        <p class="subtitle">Enter the security news URL to analyze</p>
+        
+        <input type="text" id="newsUrl" placeholder="https://example.com/security-news..." autofocus>
+        <button onclick="analyze()" id="analyzeBtn">Analyze and Generate Digest</button>
+        
+        <div class="footer">Powered by n8n & Gemini AI</div>
     </div>
 
     <script>
         function analyze() {
+            const btn = document.getElementById('analyzeBtn');
             let url = document.getElementById('newsUrl').value.trim();
             
-            // 修正點：自動過濾掉頭尾不小心貼進來的引號
+            // Clean quotes
             url = url.replace(/^["']|["']$/g, '');
 
-            if (!url) return alert('請先貼上網址！');
+            if (!url) {
+                alert('Please enter a URL!');
+                return;
+            }
             
-            // 檢查是否為合法網址格式
+            // Validate URL format
             if (!url.startsWith('http')) {
-                return alert('請輸入完整的網址 (需包含 http 或 https)');
+                alert('Please enter a valid URL starting with http or https');
+                return;
             }
 
-            // 指向 n8n 測試路徑
+            // UX Optimization: Show loading state (prevents double clicking)
+            btn.innerHTML = '⏳ Analyzing... Please wait';
+            btn.disabled = true;
+
+            // Target n8n webhook
             const webhookUrl = "http://localhost:5678/webhook/cyber-news-analysis";
-            
-            // 正確拼接參數
             const finalUrl = `${webhookUrl}?NewsUrl=${encodeURIComponent(url)}`;
             
-            console.log("正在發送至:", finalUrl);
+            console.log("Redirecting to:", finalUrl);
             window.location.href = finalUrl;
+            
+            // Note: If the page doesn't redirect immediately (e.g. server error), 
+            // you might want to reset the button state after a timeout, 
+            // but since this is a simple location href, it will hold until the new page loads.
         }
 
-        // 支援 Enter 鍵送出
+        // Support Enter key
         document.getElementById('newsUrl').addEventListener('keypress', (e) => {
             if (e.key === 'Enter') analyze();
         });
