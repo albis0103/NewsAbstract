@@ -21,11 +21,7 @@ Ensure the following are installed in your environment before proceeding:
 ### Step 1: Initialize Database & Java Server
 1. Create a MongoDB collection named `webhooks` and insert your test client data.
 2. Configure your database URI and SMTP credentials in `src/main/resources/application.properties`.
-3. Start the Spring Boot Dispatcher server:
 
-   ```bash
-   ./mvnw spring-boot:run
-   ```
 ### Step 2: Prepare Python Environment & Model
 Open a new terminal and set up the analyzer engine:
 ```powersshell
