@@ -1,0 +1,331 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "command": "=\"/Users/jason0103/Desktop/Internship/NewsAbstract/venv/bin/python\" \"/Users/jason0103/Desktop/Internship/NewsAbstract/news-analyzer-py/news_summary.py\" \"{{$json.query.NewsUrl}}\""
+      },
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        1360,
+        688
+      ],
+      "id": "88e944bc-ba48-4209-bc19-48866520a023",
+      "name": "Execute Command"
+    },
+    {
+      "parameters": {
+        "jsCode": "// 取得上一個 Python 節點吐出來的文字 (假設放在 stdout 欄位)\nlet text = $input.first().json.stdout ;\n\n// 使用 JavaScript 把 * 和 # 替換成空字串\nlet cleanText = text.replace(/[*#_><]/g, '');\n\n// 把乾淨的文字輸出給下一個節點\nreturn {\n  json: {\n    clean_summary: cleanText\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1568,
+        688
+      ],
+      "id": "f23c6260-c952-4a97-8bf8-a158bda50fcd",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "jsCode": "// 1. 確保抓到你輸入的 clean_summary\nconst text = $input.first().json.clean_summary || \"\";\n\n// 2. 準確框出 [關鍵字]： 到 3. [發生時間]： 中間的所有內容\n// 使用 \\s* 容忍任何數量的空白與換行\nconst match = text.match(/\\[關鍵字\\]：([\\s\\S]*?)3\\.\\s*\\[發生時間\\]/);\n\nlet extractedKeywords = \"\";\n\nif (match && match[1]) {\n    // 3. 把抓出來的內容，變成完美的逗號分隔字串\n    extractedKeywords = match[1]\n        .split('\\n')                  // 步驟A：遇到換行就切開，變成陣列\n        .map(word => word.trim())     // 步驟B：把每個字頭尾的「空白」跟「縮排」都砍掉\n        .filter(word => word !== \"\")  // 步驟C：把切出來的「空字串」過濾掉\n        .join(',');                   // 步驟D：剩下的乾淨關鍵字，用逗號接起來\n}\n\nreturn {\n    keywords: extractedKeywords\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1664,
+        560
+      ],
+      "id": "a6706c1a-6422-4421-a3d5-42647a5daad8",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "command": "=\"/Users/jason0103/Desktop/Internship/NewsAbstract/venv/bin/python\" \"/Users/jason0103/Desktop/Internship/NewsAbstract/news-analyzer-py/similarity.py\" \"{{ $json.keywords }}\""
+      },
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        1888,
+        560
+      ],
+      "id": "0248d35f-b79e-4667-afaa-51419d0b852b",
+      "name": "customer similarity"
+    },
+    {
+      "parameters": {
+        "path": "cyber-news-analysis",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        1280,
+        480
+      ],
+      "id": "8586449e-689c-4066-88d8-5eeb70cb1c71",
+      "name": "Webhook",
+      "webhookId": "64b7dee2-ca06-4a1c-a37f-f34f0ced5c02"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "=<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <title>SecOps Intelligence </title>\n    <link href=\"https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap\" rel=\"stylesheet\">\n    <style>\n        /* Core variables from globals.css */\n        :root {\n            --bg-primary: #0f1117;\n            --bg-secondary: #1a1d27;\n            --bg-card: #21242f;\n            --bg-card-hover: #282c3a;\n            --bg-input: #181b24;\n            --border: #2a2e3b;\n            --border-focus: #288bc4;\n            --text-primary: #e8eaed;\n            --text-secondary: #9aa0ab;\n            --text-muted: #6b7280;\n            --accent: #288bc4;\n            --success: #22c55e;\n            --danger: #ef4444;\n            --radius: 10px;\n            --radius-sm: 6px;\n            --shadow: 0 2px 12px rgba(0,0,0,0.25);\n            --transition: 0.2s ease;\n        }\n\n        * { margin: 0; padding: 0; box-sizing: border-box; }\n\n        body { \n            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; \n            background: var(--bg-primary); \n            color: var(--text-primary); \n            display: flex; \n            gap: 24px; \n            padding: 32px; \n            height: 100vh; \n            line-height: 1.6;\n        }\n\n        /* Shared Card Styles */\n        .card {\n            background: var(--bg-card);\n            border: 1px solid var(--border);\n            border-radius: var(--radius);\n            padding: 24px;\n            box-shadow: var(--shadow);\n        }\n\n        .main-editor { flex: 3; display: flex; flex-direction: column; }\n        .side-panel { flex: 1; min-width: 320px; display: flex; flex-direction: column; }\n\n        h2 { font-size: 20px; font-weight: 700; color: var(--text-primary); margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }\n        h3 { font-size: 16px; font-weight: 600; color: var(--text-primary); margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 12px; }\n\n        /* Form Controls */\n        .form-control {\n            flex-grow: 1;\n            width: 100%;\n            padding: 16px;\n            background: var(--bg-input);\n            border: 1px solid var(--border);\n            border-radius: var(--radius-sm);\n            color: var(--text-primary);\n            font-size: 15px;\n            font-family: inherit;\n            line-height: 1.7;\n            resize: none;\n            transition: all var(--transition);\n        }\n        .form-control:focus {\n            outline: none;\n            border-color: var(--accent);\n            box-shadow: 0 0 0 3px rgba(40, 139, 196, 0.15);\n        }\n\n        /* Button Styles */\n        .button-group { display: flex; gap: 16px; margin-top: 24px; }\n        .btn {\n            display: inline-flex; align-items: center; justify-content: center; gap: 8px;\n            padding: 12px 20px; border: none; border-radius: var(--radius-sm);\n            font-size: 14px; font-weight: 600; font-family: inherit; cursor: pointer;\n            transition: all var(--transition); flex: 1;\n        }\n        .btn-secondary {\n            background: var(--bg-card); color: var(--text-primary); border: 1px solid var(--border);\n        }\n        .btn-secondary:hover { border-color: var(--accent); background: var(--bg-card-hover); }\n        \n        .btn-success {\n            background: var(--success); color: #fff;\n        }\n        .btn-success:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(34, 197, 94, 0.2); }\n        .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }\n\n        /* Customer Similarity Chart */\n        .customer-card { margin-bottom: 16px; }\n        .label-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px; }\n        .label-name { color: var(--text-primary); font-weight: 500; }\n        \n        .progress-container { \n            background: var(--bg-input); \n            border: 1px solid var(--border);\n            border-radius: 10px; \n            height: 10px; \n            width: 100%; \n            overflow: hidden; \n        }\n        .progress-fill { \n            height: 100%; \n            border-radius: 10px; \n            transition: width 1s cubic-bezier(0.1, 0, 0.2, 1); \n        }\n\n        .data-source { font-size: 12px; color: var(--text-muted); margin-top: auto; padding-top: 20px; text-align: center; }\n    </style>\n</head>\n<body>\n    <div class=\"card main-editor\">\n        <h2>News Digest</h2>\n        <textarea id=\"summaryText\" class=\"form-control\">{{ $node[\"Code in JavaScript\"].json.clean_summary }}</textarea>\n        \n        <div class=\"button-group\">\n            <button class=\"btn btn-secondary\" onclick=\"copyContent()\"> Copy Summary</button>\n            <button id=\"dispatchBtn\" class=\"btn btn-success\" onclick=\"sendToDispatcher()\"> Confirm & Dispatch</button>\n        </div>\n    </div>\n\n    <div class=\"card side-panel\">\n        <h3>Customer Similarity (Top 20)</h3>\n        <div id=\"chart-area\" style=\"overflow-y: auto; padding-right: 8px;\">\n            {{ \n                (function() {\n                    try {\n                        let raw = $node[\"customer similarity\"].json.stdout;\n                        if (!raw) return \"<p style='color: var(--text-muted)'>Waiting for analysis data...</p>\";\n                        if (raw.includes(\"{\")) {\n                            raw = raw.substring(raw.indexOf(\"{\"), raw.lastIndexOf(\"}\") + 1);\n                        }\n                        const scores = JSON.parse(raw);\n                        const sortedScores = Object.entries(scores)\n                            .sort((a, b) => b[1] - a[1])\n                            .slice(0, 20);\n\n                        return sortedScores.map(([name, score]) => {\n                            const isHighRisk = score > 0.5;\n                            const scoreColor = isHighRisk ? 'var(--success)' : 'var(--text-secondary)';\n                            const barBg = isHighRisk ? 'var(--success)' : 'var(--accent)';\n\n                            return `\n                            <div class=\"customer-card\">\n                                <div class=\"label-row\">\n                                    <span class=\"label-name\">${name}</span>\n                                    <span style=\"color:${scoreColor}; font-weight: 600;\">\n                                        ${(score * 100).toFixed(2)}%\n                                    </span>\n                                </div>\n                                <div class=\"progress-container\">\n                                    <div class=\"progress-fill\" style=\"width: ${score * 100}%; background: ${barBg}\"></div>\n                                </div>\n                            </div>\n                            `;\n                        }).join('');\n                    } catch (e) {\n                        return `<div style=\"color: var(--danger); padding:12px; border:1px solid var(--danger); border-radius: 6px; background: rgba(239, 68, 68, 0.1);\">\n                                      Parsing Error: ${e.message}\n                                </div>`;\n                    }\n                })()\n            }}\n        </div>\n        <p class=\"data-source\">Source: Word2Vec Similarity</p>\n    </div>\n\n    <script>\n        function copyContent() {\n            const text = document.getElementById('summaryText').value;\n            navigator.clipboard.writeText(text).then(() => {\n                alert('Summary copied to clipboard!');\n            });\n        }\n\n        async function sendToDispatcher() {\n            const summaryText = document.getElementById('summaryText').value;\n            const btn = document.getElementById('dispatchBtn');\n            \n            //  Replace with your actual Webhook URL from the Dispatcher workflow\n            const dispatcherWebhookUrl = '{{ $execution.resumeUrl }}';\n\n            if (!summaryText.trim()) {\n                alert('Summary cannot be empty!');\n                return;\n            }\n\n            btn.innerHTML = '⏳ Sending...';\n            btn.disabled = true;\n\n            try {\n                const response = await fetch(dispatcherWebhookUrl, {\n                    method: 'POST',\n                    headers: { 'Content-Type': 'application/json' },\n                    body: JSON.stringify({ summary: summaryText })\n                });\n\n                if (response.ok) {\n                    alert(' Successfully triggered the Dispatcher system!');\n                    btn.innerHTML = '✨Dispatch Complete';\n                } else {\n                    throw new Error('Server response error (Status: ' + response.status + ')');\n                }\n            } catch (error) {\n                alert(' Dispatch failed:\\n' + error.message + '\\nPlease ensure the Dispatcher Webhook is active (Listen mode).');\n                btn.innerHTML = ' Confirm & Dispatch';\n                btn.disabled = false;\n            }\n        }\n    </script>\n</body>\n</html>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        2112,
+        704
+      ],
+      "id": "3c6e046d-50b4-4162-a76b-dd2c012bec26",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8080/app/v1",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "text/plain;charset=UTF-8"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "text/plain",
+        "body": "={{ $json.formattedText }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        2432,
+        976
+      ],
+      "id": "6ed71ab6-a65b-43ee-83fe-46989d8685fe",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "command": "pkill -9 -f news-dispatcher || true"
+      },
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        1440,
+        976
+      ],
+      "id": "abd11aa9-71af-4cf8-820e-601c6e1ba37c",
+      "name": "Execute Command1"
+    },
+    {
+      "parameters": {
+        "resume": "webhook",
+        "httpMethod": "POST",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        2016,
+        976
+      ],
+      "id": "aa3fc030-b2b1-4793-abab-30b63cec7041",
+      "name": "Wait",
+      "webhookId": "57a63c3a-2e19-4ee4-a27a-fe4c501eda57"
+    },
+    {
+      "parameters": {
+        "command": "=cd /Users/jason0103/Desktop/Internship/NewsAbstract/news-dispatcher/target && echo \"nohup java -jar news-dispatcher-0.0.1-SNAPSHOT.jar > spring-boot.log 2>&1 &\" | bash"
+      },
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        1584,
+        992
+      ],
+      "id": "ca4800fc-028a-4b9c-a8c0-dfb6b0ff924d",
+      "name": "Execute Command2"
+    },
+    {
+      "parameters": {
+        "jsCode": "\n// 取得原始文字\nlet text = $input.first().json.body.summary || \"\";\n\n// 1. 先把原本可能存在的 \\r\\n 統一轉成 \\n\nconst regex = /(\\d\\.\\s\\[[^\\]]+\\])/g;\n\n// 在匹配到的標籤前面加上兩個換行符號 \\n\\n\nlet formatted = text.replace(regex, '\\n\\n$1').trim();\nformatted = formatted.replace(/(\\[[^\\]]+\\]：)\\s?/g, '$1\\n    ');\nformatted = formatted.replace(/\\s-\\s/g, '\\n    - ');\n\nreturn {\n  formattedText: formatted\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2224,
+        976
+      ],
+      "id": "fd937799-bf69-4d94-937e-a96d8db98247",
+      "name": "Code in JavaScript2"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1760,
+        1008
+      ],
+      "id": "14562e3f-9822-46bd-b0e6-5e4a0c6613f2",
+      "name": "Wait1",
+      "webhookId": "bafaf962-a54e-4e21-ab75-39d4978f483b"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Execute Command": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "customer similarity",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Execute Command",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "customer similarity": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Command1": {
+      "main": [
+        [
+          {
+            "node": "Execute Command2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Command2": {
+      "main": [
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript2": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respond to Webhook": {
+      "main": [
+        [
+          {
+            "node": "Execute Command1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "fe472bc8-92d8-4ed7-b3c4-79ac9fbdaca7",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "877f498578f9ae92bff2a227cec86a26a19499c00f496ea8b5614b361a1d8676"
+  },
+  "id": "H0nZqlQHc4jcuj96",
+  "tags": []
+}
