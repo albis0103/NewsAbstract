@@ -151,7 +151,7 @@
             btn.disabled = true;
 
             // Target n8n webhook
-            const webhookUrl = "http://localhost:5678/webhook-test/cyber-news-analysis";
+            const webhookUrl = "http://localhost:5678/webhook/cyber-news-analysis";
             const finalUrl = `${webhookUrl}?NewsUrl=${encodeURIComponent(url)}`;
             
             console.log("Redirecting to:", finalUrl);
