@@ -20,3 +20,5 @@ My workflow (Window).json
 # 5. 其他不需要的雜物
 .env.example
 README.md
+
+models/*.vec

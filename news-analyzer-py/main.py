@@ -38,7 +38,7 @@ def similarity_api(req : SimilarityRequest):
         results = {}
 
         db_customer_feature = get_customer_feature()
-        for customer_name, features in db_customer_feature:
+        for customer_name, features in db_customer_feature.items():
             final_similarity = calculate_customer_similarity(features, news_keyword=news_keyword, model=model)
             results[customer_name] = round(float(final_similarity), 4)
         return {"stdout" : json.dumps(results, ensure_ascii=False)}
