@@ -1,0 +1,22 @@
+# 1. 絕對要排除的大魔王 (目前的 988MB 來源)
+venv/
+.venv/
+
+# 2. Python 執行時產生的快取 (讓 Container 保持乾淨)
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# 3. 專案管理與開發工具
+.git/
+.gitignore
+.vscode/
+
+# 4. 你的 Workflow 檔案 (因為 n8n 已經有這些了，不需包進 API 容器)
+My workflow (MacOS).json
+My workflow (Window).json
+
+# 5. 其他不需要的雜物
+.env.example
+README.md

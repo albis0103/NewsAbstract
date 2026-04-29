@@ -9,7 +9,7 @@ load_dotenv()
 from news_summary import generate_summary
 from similarity import get_customer_feature, calculate_customer_similarity, model
 
-app = FastAPI(title="News_nlp Api")
+app = FastAPI(title="news-nlp-api")
 
 #define the receive JSON format from frontend
 class NewsUrlRequest(BaseModel):
