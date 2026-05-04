@@ -9,52 +9,50 @@ In a modern SOC (Security Operations Center), analysts are overwhelmed by daily 
 
 ---
 
-##  Prerequisites
-Ensure the following are installed in your environment before proceeding:
-* **Python 3.10+**
-* **Node.js** (for n8n)
-* **Java 17+** & **Maven**
-* **MongoDB Atlas** account & **SMTP Server** (e.g., Mailtrap for testing)
+### Prerequisites
+* **Docker Desktop** (or Docker Engine + Docker Compose)
+* **MongoDB Atlas** account (or local MongoDB)
+* API Keys for **Gemini** and **Jina**
 
 ---
 
-### Step 1: Initialize Database & Java Server
-1. Create a MongoDB collection named `webhooks` and insert your test client data.
-2. Configure your database URI and SMTP credentials in `src/main/resources/application.properties`.
+### Step 1: Environment Configuration
+Create two `.env` files in their respective service directories.
 
-### Step 2: Prepare Python Environment & Model
-Open a new terminal and set up the analyzer engine:
-```powersshell
-cd "/[YOUR_PATH]/NewsAbstract/news-analyzer-py"
-# Install dependencies
-pip install -r requirements.txt
-pip install pymongo dnspython
+1. **Python Analyzer (`news-analyzer-py/.env`)**
+   ```env
+   GEMINI_API_KEY=your_gemini_key_here
+   JINA_API_KEY=your_jina_key_here
+2. **Java Dispatcher (news-dispatcher-service/src/main/resources/application.properties)**
+Configure your MongoDB URl and SMTP credentials here before building.
 
-# Initialize Word2Vec model
-python keyvector_model.py
+### Step 2: One-Click Deployment
+
+Open your terminal at the root of the project (where docker-compose.yml is located) and run:<br>
+
+Bash<br>
 ```
-### Step 3: Configure & Start n8n
-In the same terminal, set the required environment variables and launch n8n:<br>
-- Windows (PowerShell):<br>
+docker compose up -d --build
 ```
-$env:GEMINI_API_KEY="YOUR_GEMINI_KEY"
-$env:JINA_API_KEY="YOUR_JINA_KEY"
-$env:NODES_EXCLUDE="[]"
-$env:PYTHONIOENCODING="utf-8"
-npx n8n
-```
-- macOS/Linux:
-```
-export GEMINI_API_KEY="YOUR_GEMINI_KEY"
-export JINA_API_KEY="YOUR_JINA_KEY"
-export NODES_EXCLUDE="[]"
-export PYTHONIOENCODING="utf-8"
-npx n8n
-```
-### Step 4: Import Workflow & Test
-1.Access n8n: Open http://localhost:5678 in your browser.<br>
-2.Import: Drag and drop my_workflow.json into the canvas and click Publish.<br>
-3.Launch UI: Open Analyzer.html (or webhook.html) in your browser to interact with the system!<br>
+Note: The first startup will take a few minutes as it downloads base images and downloads the Word2Vec model inside the Python container.<br>
+
+### Step 3: Initialize n8n Workflow
+
+Once all containers are running, visit http://localhost:5678 to access the n8n dashboard.<br>
+
+Complete the initial setup (create a local admin account).<br>
+
+Import the my_workflow.json (or main-workflow.json) file into n8n.<br>
+
+Open the first Webhook node and ensure it is set to listen for GET requests and Respond is set to When Last Node Finishes.<br>
+
+Toggle the workflow to Public.<br>
+
+### Step 4: Launch the UI
+
+Visit http://localhost:80 (or the port you defined for Nginx) in your browser. You can now submit news URLs and let the automated pipeline do the rest!<br>
+
+
 
 ## 📚 Documentation (Wiki)
 For advanced configurations, architecture logic, and debugging, please visit our Wiki:
