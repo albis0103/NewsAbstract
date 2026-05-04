@@ -1,0 +1,41 @@
+
+
+services:
+  frontend-ui:
+    image: nginx:alpine
+    container_name: news-frontend
+    ports:
+      - "80:80"
+    volumes:
+      - ./frontend:/usr/share/nginx/html:ro
+    restart: always
+
+  n8n-workflow:
+    image: n8nio/n8n:latest
+    container_name: n8n-workflow
+    ports: 
+      - "5678:5678"
+    environment:
+      - N8N_PROTOCOL=http
+      - N8N_PORT=5678
+    volumes:
+      - n8n_data:/home/node/.n8n
+    restart: always
+
+  news-nlp-services:
+    image: news-nlp-api:latest
+    container_name: news-nlp-service
+    ports: 
+      - "8000:8000"
+    env_file:
+      - ./news-analyzer-py/.env
+    restart: always
+  
+  news-dispatcher-service:
+    image: news-dispatcher-api:latest
+    container_name: news-dispatcher-service
+    ports: 
+      - "8080:8080"
+    restart: always
+volumes:
+ n8n_data:
