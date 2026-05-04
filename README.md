@@ -24,8 +24,14 @@ Create two `.env` files in their respective service directories.
    GEMINI_API_KEY=your_gemini_key_here
    JINA_API_KEY=your_jina_key_here
 2. **Java Dispatcher (news-dispatcher-service/src/main/resources/application.properties)**
-Configure your MongoDB URl and SMTP credentials here before building.
 
+Configure your database and SMTP (e.g., Mailtrap)<br>
+:(news-dispatcher-service/src/main/resources/application.properties)
+```
+spring.data.mongodb.uri=mongodb+srv://<user>:<password>@cluster0.net/SecOpsDB
+spring.mail.host=sandbox.smtp.mailtrap.io
+spring.mail.port=2525
+```
 ### Step 2: One-Click Deployment
 
 Open your terminal at the root of the project (where docker-compose.yml is located) and run:<br>
