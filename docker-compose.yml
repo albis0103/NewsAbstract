@@ -25,6 +25,8 @@ services:
   news-nlp-services:
     image: news-nlp-api:latest
     container_name: news-nlp-service
+    # if not docker public image, need to build:path(saved python docker file directory name)
+    build: ./news-analyzer-py
     ports: 
       - "8000:8000"
     env_file:
@@ -34,6 +36,8 @@ services:
   news-dispatcher-service:
     image: news-dispatcher-api:latest
     container_name: news-dispatcher-service
+    # if not docker public image, need to build:path(saved Java docker file directory name)
+    build: ./news-dispatcher
     ports: 
       - "8080:8080"
     restart: no
