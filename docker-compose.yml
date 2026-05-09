@@ -8,7 +8,7 @@ services:
       - "80:80"
     volumes:
       - ./frontend:/usr/share/nginx/html:ro
-    restart: always
+    restart: no
 
   n8n-workflow:
     image: n8nio/n8n:latest
@@ -20,7 +20,7 @@ services:
       - N8N_PORT=5678
     volumes:
       - n8n_data:/home/node/.n8n
-    restart: always
+    restart: no
 
   news-nlp-services:
     image: news-nlp-api:latest
@@ -29,13 +29,13 @@ services:
       - "8000:8000"
     env_file:
       - ./news-analyzer-py/.env
-    restart: always
+    restart: no
   
   news-dispatcher-service:
     image: news-dispatcher-api:latest
     container_name: news-dispatcher-service
     ports: 
       - "8080:8080"
-    restart: always
+    restart: no
 volumes:
  n8n_data:
