@@ -31,6 +31,8 @@ services:
       - "8000:8000"
     env_file:
       - ./news-analyzer-py/.env
+    volumes:
+      - ./news-analyzer-py/models:/app/models
     restart: no
   
   news-dispatcher-service:

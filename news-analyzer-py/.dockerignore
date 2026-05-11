@@ -21,4 +21,4 @@ My workflow (Window).json
 .env.example
 README.md
 
-models/*.vec
+models/
