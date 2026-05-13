@@ -8,8 +8,33 @@ services:
       - "80:80"
     volumes:
       - ./frontend:/usr/share/nginx/html:ro
-    restart: no
+    restart: "no"
 
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    container_name: kafka-broker
+    ports:
+      - "9092:9092"
+    environment:
+      # --- KRaft 核心配置 ---
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: 'broker,controller'
+      KAFKA_CONTROLLER_QUORUM_VOTERS: '1@kafka:29093'
+      KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
+      KAFKA_CLUSTER_ID: 'MkU3OEVBNTcwNTJENDM2Qk'
+      
+      # --- 監聽器配置 (修正拼字並對齊層級) ---
+      KAFKA_LISTENERS: 'PLAINTEXT://:29092,CONTROLLER://:29093,PLAINTEXT_HOST://:9092'
+      KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT'
+      KAFKA_INTER_BROKER_LISTENER_NAME: 'PLAINTEXT'
+      
+      # --- 穩定性配置 (修正拼字) ---
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+    restart: "no"
   n8n-workflow:
     image: n8nio/n8n:latest
     container_name: n8n-workflow
@@ -20,7 +45,7 @@ services:
       - N8N_PORT=5678
     volumes:
       - n8n_data:/home/node/.n8n
-    restart: no
+    restart: "no"
 
   news-nlp-services:
     image: news-nlp-api:latest
@@ -33,7 +58,7 @@ services:
       - ./news-analyzer-py/.env
     volumes:
       - ./news-analyzer-py/models:/app/models
-    restart: no
+    restart: "no"
   
   news-dispatcher-service:
     image: news-dispatcher-api:latest
@@ -42,6 +67,26 @@ services:
     build: ./news-dispatcher
     ports: 
       - "8080:8080"
-    restart: no
+    restart: "no"
+    
+  dashboard-api:
+    build: ./dashboard-api
+    container_name: dashboard-api
+    ports: 
+      - "8001:8001"
+    environment: 
+      - KAFKA_BROKER=kafka:29092
+    depends_on:
+      - kafka
+    restart: "no"
+  news-crawler:
+    build: ./news-crawler
+    environment:
+      - KAFKA_BROKER=kafka:29092
+      - API_URL=http://dashboard-api:8001/api/rss-sources
+    depends_on:
+      - dashboard-api
+      - kafka
+    restart: "on-failure"
 volumes:
  n8n_data:
