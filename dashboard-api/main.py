@@ -41,6 +41,7 @@ def consume_kafka():
     # from backgrond, get the news from kafka persistently
     kafkabroker = os.getenv("KAFKA_BROKER", "localhost:9092")
     while True:
+        consumer = None
         try:
             consumer = KafkaConsumer(
                 'raw-security-news', #set Topic from crawler
@@ -57,6 +58,10 @@ def consume_kafka():
                     latest_news.pop()
         except Exception as e:
             print(f"Kafka connect ERROR!:{e}")
+            time.sleep(5)
+        finally:
+            if consumer is not None:
+                consumer.close()
             time.sleep(5)
     
 #when fastapi start new thread to run consume_kafka 
