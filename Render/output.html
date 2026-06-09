@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>自由系統資安週報</title>
+</head>
+<body style="margin:0; padding:0; background-color:#F5F5F5; font-family:'Microsoft JhengHei', 'PingFang TC', 'Helvetica Neue', Arial, sans-serif;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#F5F5F5;">
+  <tr>
+    <td align="center" style="padding:0;">
+      <table role="presentation" width="640" cellpadding="0" cellspacing="0" border="0" style="max-width:640px; width:100%;">
+
+        <!-- ===== HEADER BANNER ===== -->
+        <tr>
+          <td style="background-color:#FFFFFF; padding:0;">
+            <img src="https://static.newsleopard.com/40286b726bbff35c016bf986959b0796/2025-12-04-06-34-CRE81XAz"
+                 alt="自由系統資安週報"
+                 width="640"
+                 style="display:block; width:100%; height:auto; border:0;">
+          </td>
+        </tr>
+        <!-- ===== GREETING ===== -->
+        <tr>
+          <td style="background-color:#FFFFFF; padding:15px 24px 18px 24px;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td style="color:#333333; font-size:14px; line-height:22px;">
+                  <p style="margin:0 0 8px 0;">親愛的客戶您好</p>
+                  <p style="margin:0;">自由系統資安服務團隊本週有以下情資分析供您參考：</p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- ===== SECTION HEADER: 本週重大資安事件 ===== -->
+        <tr>
+          <td style="background-color:#288BC4; padding:6px 24px;">
+            <p style="margin:0; font-size:15px; font-weight:bold; color:#FFFFFF;">
+              &#128276; 本週重大資安事件
+            </p>
+          </td>
+        </tr>
+
+                <!-- ===== EVENT 1 ===== -->
+        <tr>
+          <td style="background-color:#FFFFFF; padding:18px 30px;">
+            <p style="margin:24px 0 12px 0; font-size:14.5px; font-weight:bold; color:#333333;">
+              MOVEit Automation 關鍵漏洞修補：身份驗證繞過與權限提升
+            </p>
+ 
+            <p style="margin:0 0 4px 0; font-size:14px; color:#025EB3;">
+              <strong>&#128197; 發生時間 : </strong>
+            </p>
+            <p style="margin:0 0 4px 0; font-size:14px; line-height:20px; color:#025EB3;">正式發布：2026年5月13日 (GMT)</p><p style="margin:0 0 4px 0; font-size:14px; line-height:20px; color:#025EB3;">預計部署：即刻進行，確保及時修補。</p>
+ 
+            <p style="margin:0 0 4px 0; font-size:14px; color:#025EB3;">
+              <strong>&#127919; 影響範圍 :</strong>
+            </p>
+            <p style="margin:0 0 4px 0; font-size:14px; line-height:20px; color:#025EB3;">作業系統版本：運行Progress MOVEit Automation的伺服器環境。</p><p style="margin:0 0 4px 0; font-size:14px; line-height:20px; color:#025EB3;">適用對象：使用MOVEit Automation 2025.1.4及更舊版本、2025.0.8及更舊版本、2024.1.7及更舊版本的企業組織及IT管理員。</p>
+ 
+            <p style="margin:0 0 4px 0; font-size:14px; color:#333333;">
+              ⚠️ <strong>潛在影響：</strong>
+            </p>
+            <p style="margin:0 0 10px 0; font-size:11pt; line-height:20px; color:#000000;">這些關鍵漏洞允許攻擊者繞過身份驗證並提升權限，進而獲得MOVEit Automation的未經授權存取和管理控制，導致敏感數據外洩。修補可有效防範此類服務後端指令埠介面的惡意利用，阻止數據暴露及系統接管。這凸顯了對企業MFT解決方案持續安全審查的必要性。</p>
+ 
+            <p style="margin:0 0 4px 0; font-size:14px; color:#333333;">
+              &#128221; <strong>重點整理 ：</strong>
+            </p>
+            <p style="margin:0 0 10px 0; font-size:11pt; line-height:20px; color:#000000;">Progress Software發布緊急安全更新，修補其企業級受管檔案傳輸 (MFT) 解決方案MOVEit Automation中的兩項關鍵漏洞：CVE-2026-4670 (CVSS 9.8) 為身份驗證繞過漏洞，CVE-2026-5174 (CVSS 7.7) 為不當輸入驗證導致的權限提升漏洞。這些漏洞存在於MOVEit Automation的服務後端指令埠介面，若遭成功利用，攻擊者可在未經授權的情況下獲得系統管理權限，進而完全控制數據傳輸流程，導致敏感數據洩露和服務中斷等嚴重後果。</p><p style="margin:0 0 10px 0; font-size:11pt; line-height:20px; color:#000000;">受影響的版本包括MOVEit Automation 2025.1.4及更舊版本、2025.0.8及更舊版本、以及2024.1.7及更舊版本。Progress已分別在MOVEit Automation 2025.1.5、2025.0.9和2024.1.8版本中提供修復。此漏洞由Airbus SecLab研究人員發現並報告，目前無已知的工作緩解措施。鑑於MOVEit系列產品過去曾被勒索軟體組織（如Cl0p）大規模利用，儘管目前沒有證據顯示這些新漏洞已在野外被利用，但強烈建議所有受影響的企業用戶和IT管理員立即應用官方提供的安全補丁，以避免潛在的嚴重安全風險和數據暴露。及時修補對於維護企業數據完整性和運營安全至關重要。</p>
+ 
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:12px 0 0 0;">
+              <tr>
+                <td style="background-color:#1279C7; border-radius:4px; padding:8px 20px;">
+                  <a href="https://thehackernews.com/2026/05/progress-patches-critical-moveit.html"
+                     style="color:#FFFFFF; text-decoration:none; font-size:14px; font-weight:bold; letter-spacing:0.75px;">
+                    了解更多
+                  </a>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <tr>
+          <td style="background-color:#FFFFFF; padding:0 24px;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td style="border-top:1px solid #DDDDDD; font-size:0; line-height:0; height:1px;">&nbsp;</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <!-- ===== EVENT 2 ===== -->
+        <tr>
+          <td style="background-color:#FFFFFF; padding:18px 30px;">
+            <p style="margin:24px 0 12px 0; font-size:14.5px; font-weight:bold; color:#333333;">
+              事件 2
+            </p>
+ 
+            <p style="margin:0 0 4px 0; font-size:14px; color:#025EB3;">
+              <strong>&#128197; 發生時間 : </strong>
+            </p>
+            <p style="margin:0 0 4px 0; font-size:14px; color:#025EB3;">—</p>
+ 
+            <p style="margin:0 0 4px 0; font-size:14px; color:#025EB3;">
+              <strong>&#127919; 影響範圍 :</strong>
+            </p>
+            <p style="margin:0 0 4px 0; font-size:14px; color:#025EB3;">—</p>
+ 
+            <p style="margin:0 0 4px 0; font-size:14px; color:#333333;">
+              ⚠️ <strong>潛在影響：</strong>
+            </p>
+            <p style="margin:0 0 12px 0; font-size:11pt; color:#333333;">—</p>
+ 
+            <p style="margin:0 0 4px 0; font-size:14px; color:#333333;">
+              &#128221; <strong>重點整理 ：</strong>
+            </p>
+            <p style="margin:0 0 10px 0; font-size:11pt; color:#000000;">—</p>
+ 
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:12px 0 0 0;">
+              <tr>
+                <td style="background-color:#1279C7; border-radius:4px; padding:8px 20px;">
+                  <a href="#"
+                     style="color:#FFFFFF; text-decoration:none; font-size:14px; font-weight:bold; letter-spacing:0.75px;">
+                    了解更多
+                  </a>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <tr>
+          <td style="background-color:#FFFFFF; padding:0 24px;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td style="border-top:1px solid #DDDDDD; font-size:0; line-height:0; height:1px;">&nbsp;</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <!-- ===== EVENT 3 ===== -->
+        <tr>
+          <td style="background-color:#FFFFFF; padding:18px 30px;">
+            <p style="margin:24px 0 12px 0; font-size:14.5px; font-weight:bold; color:#333333;">
+              加拿大簡訊廣播器攻擊利用2G弱點發送釣魚簡訊
+            </p>
+ 
+            <p style="margin:0 0 4px 0; font-size:14px; color:#025EB3;">
+              <strong>&#128197; 發生時間 : </strong>
+            </p>
+            <p style="margin:0 0 4px 0; font-size:14px; line-height:20px; color:#025EB3;">正式發布：2026-05-08 (新聞發布日期)</p><p style="margin:0 0 4px 0; font-size:14px; line-height:20px; color:#025EB3;">預計部署：攻擊活動自2025年11月起持續至今，網路安全中心於2026年5月1日發布防禦指引。</p>
+ 
+            <p style="margin:0 0 4px 0; font-size:14px; color:#025EB3;">
+              <strong>&#127919; 影響範圍 :</strong>
+            </p>
+            <p style="margin:0 0 4px 0; font-size:14px; line-height:20px; color:#025EB3;">作業系統版本：所有支援2G連線功能的行動裝置，特別是未啟用強化安全設定（如iOS「封閉模式」）的智慧型手機。</p><p style="margin:0 0 4px 0; font-size:14px; line-height:20px; color:#025EB3;">適用對象：一般行動網路使用者及企業員工，尤其是在簡訊廣播器可能部署的公共區域，或依賴2G網路訊號的舊型設備使用者。</p>
+ 
+            <p style="margin:0 0 4px 0; font-size:14px; color:#333333;">
+              ⚠️ <strong>潛在影響：</strong>
+            </p>
+            <p style="margin:0 0 10px 0; font-size:11pt; line-height:20px; color:#000000;">簡訊廣播器攻擊暴露了2G網路與SMS OTP的驗證弱點，使得釣魚簡訊能繞過電信防護。其核心價值在於強調強固型身分驗證的重要性，促使MFA從SMS轉向FIDO2/Passkey。這些技術利用Challenge-Response與數位簽章，有效防範釣魚與MitM攻擊，提供無密碼的安全驗證，強化防禦能力。此事件加速了淘汰傳統弱點，推動更安全的無密碼趨勢。</p>
+ 
+            <p style="margin:0 0 4px 0; font-size:14px; color:#333333;">
+              &#128221; <strong>重點整理 ：</strong>
+            </p>
+            <p style="margin:0 0 10px 0; font-size:11pt; line-height:20px; color:#000000;">加拿大多倫多警方近期公布「燈塔專案」調查結果，揭露了利用簡訊廣播器（SMS blaster）發送大量釣魚簡訊的犯罪活動。自2025年11月啟動調查以來，警方已查獲數以萬計裝置曾連線至攻擊者設備，並記錄超過1,300萬次網路中斷事件。</p><p style="margin:0 0 10px 0; font-size:11pt; line-height:20px; color:#000000;">攻擊者透過簡訊廣播器假冒合法行動基地臺，利用其強訊號誘使附近手機或平板連線。關鍵在於，這些設備利用2G行動網路缺乏強制身分驗證及加密的固有弱點，強制連接裝置降級至2G模式，進而繞過電信業者既有的防護與過濾機制，大量發送偽裝成可信任組織的釣魚簡訊，要求受害者點擊惡意連結並輸入個資、銀行憑證。此行為不僅造成財產損失風險，更可能干擾911等緊急服務通訊。</p><p style="margin:0 0 10px 0; font-size:11pt; line-height:20px; color:#000000;">加拿大網路安全中心建議使用者，收到可疑簡訊切勿點擊連結，應透過官方管道確認。更重要的是，應優先採用驗證器App或硬體安全金鑰等方式進行多因素驗證，而非依賴易受攔截的SMS驗證碼。此外，使用者可手動關閉裝置的2G連線功能，例如iPhone的「封閉模式」（Lockdown Mode）便能關閉2G/3G網路支援，有效降低被簡訊廣播器誘導連線的風險。此事件再次突顯了舊有通訊技術的資安隱憂以及強化身分驗證機制的急迫性。</p>
+ 
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:12px 0 0 0;">
+              <tr>
+                <td style="background-color:#1279C7; border-radius:4px; padding:8px 20px;">
+                  <a href="https://www.ithome.com.tw/news/175664"
+                     style="color:#FFFFFF; text-decoration:none; font-size:14px; font-weight:bold; letter-spacing:0.75px;">
+                    了解更多
+                  </a>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+
+        <!-- ===== FOOTER TEXT ===== -->
+        <tr>
+          <td style="background-color:#FFFFFF; padding:18px 24px;" align="center">
+            <p style="margin:0 0 4px 0; font-size:14px; color:#333333;">
+              如果有其他問題，歡迎跟我們聯絡。謝謝。
+            </p>
+            <p style="margin:0; font-size:14px; color:#333333;">
+              Cybersecurity Service Support
+            </p>
+          </td>
+        </tr>
+
+        <!-- ===== FOOTER BAR WITH SOCIAL ICONS ===== -->
+        <tr>
+          <td style="background-color:#288BC4; padding:12px 24px;" align="center">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td style="padding:0 12px;">
+                  <a href="https://www.freedom.net.tw/">
+                    <img src="https://static.newsleopard.com/nl/white/home.png"
+                         alt="home" width="24" height="24"
+                         style="display:inline-block; border:0;">
+                  </a>
+                </td>
+                <td style="padding:0 12px;">
+                  <a href="https://www.facebook.com/FreedomSystems/">
+                    <img src="https://static.newsleopard.com/nl/white/facebook.png"
+                         alt="facebook" width="24" height="24"
+                         style="display:inline-block; border:0;">
+                  </a>
+                </td>
+                <td style="padding:0 12px;">
+                  <a href="https://www.linkedin.com/company/freedomsystems/">
+                    <img src="https://static.newsleopard.com/nl/white/linkedin.png"
+                         alt="linkedin" width="24" height="24"
+                         style="display:inline-block; border:0;">
+                  </a>
+                </td>
+                <td style="padding:0 12px;">
+                  <a href="https://www.youtube.com/@FreedomSystems">
+                    <img src="https://static.newsleopard.com/nl/white/youtube.png"
+                         alt="youtube" width="24" height="24"
+                         style="display:inline-block; border:0;">
+                  </a>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+      </table>
+      <!-- /Main container -->
+
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>
