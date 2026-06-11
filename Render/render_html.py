@@ -1,5 +1,4 @@
-import re
-from pathlib import Path
+
 
 HTML_TEMPLATE = '''<!DOCTYPE html>
 <html lang="zh-TW">
@@ -160,41 +159,9 @@ DIVIDER = '''        <tr>
           </td>
         </tr>'''
 
-#clean the prefix: '-' and space
-def clean(text: str):
-    lines = [l.strip() for l in text.strip().splitlines()]
-    cleaned = []
-    for line in lines:
-        line = re.sub(r"^[-–]\s*", '', line)
-        if line: cleaned.append(line)
-    return cleaned
-
-# dict: [field] -> field digest
-FIELD_PATTERNS = {
-    'title': r"1\.\s\[標題\][：:]?\s*\n(.*?)(?=\n\s*\n|\n\s*\d+\.)",
-    'date': r"3\.\s\[發生時間\][：:]?\s*\n(.*?)(?=\n\s*\n\s*\d+\.|\n\s*\d+\.)",
-    'scope': r"4\.\s\[影響範圍\][：:]?\s*\n(.*?)(?=\n\s*\n\s*\d+\.|\n\s*\d+\.)",
-    'impact': r"5\.\s\[潛在影響\][：:]?\s*\n(.*?)(?=\n\s*\n\s*\d+\.|\n\s*\d+\.)",
-    'summary': r"6\.\s\[重點整理\][：:]?\s*\n(.*?)(?=\n\s*\n\s*\d+\.|\n\s*\d+\.)",
-    'url':r"7\.\s\[新聞網址\][：:]?\s*\n\s*(https?://\S+)",
-}
-def parse_event(raw: str) -> dict:
-    result = {}
-    for field, pattern in FIELD_PATTERNS.items():
-        match = re.search(pattern, raw, flags=re.DOTALL)
-        if match:
-            result[field] = clean(match.group(1))
-        else:
-            result[field] = []
-    if result['url']:
-        result['url'] = result['url'][0] if isinstance(result['url'], list) else result['url']
-    else:
-        result['url'] = '#'
-    return result
 
 # transform list[str] -> <p>
 def _lines_to_html(lines: list[str]) -> str:
-    """將 list of str 轉為多個 <p> 段落。"""
     return "".join(
         f'<p style="margin:0 0 10px 0; font-size:11pt; line-height:20px; color:#000000;">{line}</p>'
         for line in lines
@@ -234,13 +201,4 @@ def render_report(events: list[dict]) -> str:
         events_html = events_html
     )
 
-def main():
-    base = Path('data')
-    events = []
-    for i in range(1,4):
-        raw = (base/f"txt{i}.txt").read_text(encoding='utf-8')
-        events.append(parse_event(raw=raw))
-    html = render_report(events=events)
-    Path('output.html').write_text(html, encoding='utf-8')
-if __name__ == '__main__':
-    main()
+
