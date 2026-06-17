@@ -23,12 +23,11 @@ def summarize_api(req : NewsUrlRequest):
     if not apikey:
         raise HTTPException(status_code=500, detail="GEMINI_API_KEY is not set in .env")
     
-    result = generate_summary(req.url, api_key=apikey)
+    data, err = generate_summary(req.url, apikey)
     
-    if result.startswith("❌"):
-        raise HTTPException(status_code=400, detail=result)
-    
-    return {"stdout": result}
+    if err:
+        raise HTTPException(status_code=400, detail=err)
+    return {'data':data}
 #APi Endpoint 2 : customer similarity
 @app.post("/api/v1/similarity")
 def similarity_api(req : SimilarityRequest):

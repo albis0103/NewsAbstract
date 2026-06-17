@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SecOps Intelligence </title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Core variables from globals.css */
+        :root {
+            --bg-primary: #0f1117;
+            --bg-secondary: #1a1d27;
+            --bg-card: #21242f;
+            --bg-card-hover: #282c3a;
+            --bg-input: #181b24;
+            --border: #2a2e3b;
+            --border-focus: #288bc4;
+            --text-primary: #e8eaed;
+            --text-secondary: #9aa0ab;
+            --text-muted: #6b7280;
+            --accent: #288bc4;
+            --success: #22c55e;
+            --danger: #ef4444;
+            --radius: 10px;
+            --radius-sm: 6px;
+            --shadow: 0 2px 12px rgba(0,0,0,0.25);
+            --transition: 0.2s ease;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body { 
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; 
+            background: var(--bg-primary); 
+            color: var(--text-primary); 
+            display: flex; 
+            gap: 24px; 
+            padding: 32px; 
+            height: 100vh; 
+            line-height: 1.6;
+        }
+
+        /* Shared Card Styles */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            box-shadow: var(--shadow);
+        }
+
+        .main-editor { flex: 3; display: flex; flex-direction: column; }
+        .side-panel { flex: 1; min-width: 320px; display: flex; flex-direction: column; }
+
+        h2 { font-size: 20px; font-weight: 700; color: var(--text-primary); margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+        h3 { font-size: 16px; font-weight: 600; color: var(--text-primary); margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
+
+        /* Form Controls */
+        .form-control {
+            flex-grow: 1;
+            width: 100%;
+            padding: 16px;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            color: var(--text-primary);
+            font-size: 15px;
+            font-family: inherit;
+            line-height: 1.7;
+            resize: none;
+            transition: all var(--transition);
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(40, 139, 196, 0.15);
+        }
+
+        /* Button Styles */
+        .button-group { display: flex; gap: 16px; margin-top: 24px; }
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+            padding: 12px 20px; border: none; border-radius: var(--radius-sm);
+            font-size: 14px; font-weight: 600; font-family: inherit; cursor: pointer;
+            transition: all var(--transition); flex: 1;
+        }
+        .btn-secondary {
+            background: var(--bg-card); color: var(--text-primary); border: 1px solid var(--border);
+        }
+        .btn-secondary:hover { border-color: var(--accent); background: var(--bg-card-hover); }
+        
+        .btn-success {
+            background: var(--success); color: #fff;
+        }
+        .btn-success:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(34, 197, 94, 0.2); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+        /* Customer Similarity Chart */
+        .customer-card { margin-bottom: 16px; }
+        .label-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px; }
+        .label-name { color: var(--text-primary); font-weight: 500; }
+        
+        .progress-container { 
+            background: var(--bg-input); 
+            border: 1px solid var(--border);
+            border-radius: 10px; 
+            height: 10px; 
+            width: 100%; 
+            overflow: hidden; 
+        }
+        .progress-fill { 
+            height: 100%; 
+            border-radius: 10px; 
+            transition: width 1s cubic-bezier(0.1, 0, 0.2, 1); 
+        }
+
+        .data-source { font-size: 12px; color: var(--text-muted); margin-top: auto; padding-top: 20px; text-align: center; }
+        .field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    overflow-y: auto;
+    flex-grow: 1;
+}
+
+.field-group label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 8px;
+}
+
+.field-group input {
+    width: 100%;
+    padding: 10px 12px;
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 14px;
+}
+
+.field-group textarea {
+    width: 100%;
+    padding: 10px 12px;
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 14px;
+    resize: vertical;
+    min-height: 80px;
+    line-height: 1.6;
+}
+
+.field-group input:focus,
+.field-group textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+    
+    </style>
+</head>
+<body>
+    <div class="card main-editor">
+        <h2>News Digest</h2>
+        <div class="field-group">
+            <label>標題</label>
+            <input id="f_title" value="{{ $node['API:digest'].json.data.title }}">
+            
+            <label>發生時間</label>
+            <textarea id="f_date">{{ $node['API:digest'].json.data.date.join('\n') }}</textarea>
+
+            <label>影響範圍</label>
+            <textarea id="f_scope">{{ $node['API:digest'].json.data.scope.join('\n') }}</textarea>
+
+            <label>潛在影響</label>
+            <textarea id="f_impact">{{ $node['API:digest'].json.data.impact.join('\n') }}</textarea>
+
+            <label>重點整理</label>
+            <textarea id="f_summary">{{ $node['API:digest'].json.data.summary.join('\n') }}</textarea>
+
+            <label>新聞網址</label>
+            <input id="f_url" value="{{ $node['API:digest'].json.data.url }}">
+        </div>
+        <div class="button-group">
+            <button class="btn btn-secondary" onclick="copyContent()"> Copy Summary</button>
+            <button id="dispatchBtn" class="btn btn-success" onclick="sendToDispatcher()"> Confirm & Dispatch</button>
+        </div>
+    </div>
+
+    <div class="card side-panel">
+        <h3>Customer Similarity (Top 20)</h3>
+        <div id="chart-area" style="overflow-y: auto; padding-right: 8px;">
+            {{ 
+                (function() {
+                    try {
+                        let raw = $node["API:similarity"].json.stdout;
+                        if (!raw) return "<p style='color: var(--text-muted)'>Waiting for analysis data...</p>";
+                        if (raw.includes("{")) {
+                            raw = raw.substring(raw.indexOf("{"), raw.lastIndexOf("}") + 1);
+                        }
+                        const scores = JSON.parse(raw);
+                        const sortedScores = Object.entries(scores)
+                            .sort((a, b) => b[1] - a[1])
+                            .slice(0, 20);
+
+                        return sortedScores.map(([name, score]) => {
+                            const isHighRisk = score > 0.5;
+                            const scoreColor = isHighRisk ? 'var(--success)' : 'var(--text-secondary)';
+                            const barBg = isHighRisk ? 'var(--success)' : 'var(--accent)';
+
+                            return `
+                            <div class="customer-card">
+                                <div class="label-row">
+                                    <span class="label-name">${name}</span>
+                                    <span style="color:${scoreColor}; font-weight: 600;">
+                                        ${(score * 100).toFixed(2)}%
+                                    </span>
+                                </div>
+                                <div class="progress-container">
+                                    <div class="progress-fill" style="width: ${score * 100}%; background: ${barBg}"></div>
+                                </div>
+                            </div>
+                            `;
+                        }).join('');
+                    } catch (e) {
+                        return `<div style="color: var(--danger); padding:12px; border:1px solid var(--danger); border-radius: 6px; background: rgba(239, 68, 68, 0.1);">
+                                      Parsing Error: ${e.message}
+                                </div>`;
+                    }
+                })()
+            }}
+        </div>
+        <p class="data-source">Source: Word2Vec Similarity</p>
+    </div>
+
+    <script>
+        const RESUME_URL = '{{ $execution.resumeUrl }}';
+const RENDER_URL = 'http://localhost:8002/render';
+const DISPATCHER_URL = 'http://localhost:8080/api/dispatch'; // 確認你的 dispatcher endpoint
+
+function copyContent() {
+    const title   = document.getElementById('f_title').value;
+    const date    = document.getElementById('f_date').value;
+    const scope   = document.getElementById('f_scope').value;
+    const impact  = document.getElementById('f_impact').value;
+    const summary = document.getElementById('f_summary').value;
+    const url     = document.getElementById('f_url').value;
+    const text = `標題: ${title}\n\n發生時間:\n${date}\n\n影響範圍:\n${scope}\n\n潛在影響:\n${impact}\n\n重點整理:\n${summary}\n\n網址: ${url}`;
+    navigator.clipboard.writeText(text).then(() => {
+        alert('Summary copied to clipboard!');
+    });
+}
+
+function collectPayload() {
+    const lines = (id) => document.getElementById(id).value
+        .split('\n').map(l => l.trim()).filter(Boolean);
+    return {
+        title:   [document.getElementById('f_title').value.trim()],
+        date:    lines('f_date'),
+        scope:   lines('f_scope'),
+        impact:  lines('f_impact'),
+        summary: lines('f_summary'),
+        url:     document.getElementById('f_url').value.trim() || '#'
+    };
+}
+
+// 初始化：根據目前 localStorage 狀態更新按鈕文字
+function updateBtn() {
+    const queue = JSON.parse(localStorage.getItem('digestQueue') || '[]');
+    const count = queue.length;
+    const btn = document.getElementById('dispatchBtn');
+    if (count < 2) {
+        btn.innerHTML = `add news (${count + 1}/3)`;
+    } else {
+        btn.innerHTML = `add news & Dispatcher (3/3)`;
+    }
+}
+
+async function sendToDispatcher() {
+    const btn = document.getElementById('dispatchBtn');
+    const payload = collectPayload();
+
+    if (!payload.title[0]) {
+        alert('title can not be NULL!!!');
+        return;
+    }
+
+    const queue = JSON.parse(localStorage.getItem('digestQueue') || '[]');
+    queue.push(payload);
+    localStorage.setItem('digestQueue', JSON.stringify(queue));
+
+    // 前兩篇：存完就結束
+    if (queue.length < 3) {
+        btn.innerHTML = `added (${queue.length}/3)`;
+        btn.disabled = true;
+        return;
+    }
+
+    // 第三篇：寄出
+    btn.innerHTML = '⏳ Rendering...';
+    btn.disabled = true;
+
+    try {
+        // 1. 打 render-service
+        const renderRes = await fetch(RENDER_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ events: queue })
+        });
+        if (!renderRes.ok) throw new Error('Render failed: ' + renderRes.status);
+        const { html } = await renderRes.json();
+
+        btn.innerHTML = '⏳ Dispatching...';
+
+        // 2. 打 dispatcher
+        const dispatchRes = await fetch(DISPATCHER_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ html })
+        });
+        if (!dispatchRes.ok) throw new Error('Dispatch failed: ' + dispatchRes.status);
+
+        // 3. resume n8n（第三篇的 execution）
+        await fetch(RESUME_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ status: 'dispatched' })
+        });
+
+        localStorage.removeItem('digestQueue');
+        alert('Dispatch successful！');
+        btn.innerHTML = '✨ Dispatch Complete';
+
+    } catch (error) {
+        alert('寄出失敗：\n' + error.message);
+        // 回滾：把第三篇從 queue 移除
+        queue.pop();
+        localStorage.setItem('digestQueue', JSON.stringify(queue));
+        btn.innerHTML = 'add news and dispatcher (3/3)';
+        btn.disabled = false;
+    }
+}
+
+// 頁面載入時更新按鈕狀態 
+    updateBtn();
+    </script>
+</body>
+</html>

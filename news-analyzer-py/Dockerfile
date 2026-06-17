@@ -3,7 +3,7 @@ FROM python:3.13-slim AS builder
 #2.set containner working scope(directory)
 WORKDIR /app
 RUN pip install --no-cache-dir --upgrade pip
-RUN apt-get update && apt-get install -y gcc g++ build-essential
+RUN apt-get update && apt-get install -y gcc g++ build-essential libxml2-dev libxslt1-dev
 
 RUN python -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"

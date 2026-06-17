@@ -4,6 +4,7 @@ import requests
 from google import genai  # 使用新版 SDK
 from dotenv import load_dotenv
 from pathlib import Path
+import json
 
 sys.stdout.reconfigure(encoding = 'utf-8')#強制utf編碼
 # 取得目前這個程式碼檔案的路徑，並找到它旁邊的 .env
@@ -47,8 +48,40 @@ def generate_summary(url, api_key):
     article_text = readnew(url)
     if not article_text:
         return "❌ 網頁抓取失敗，請確認網址或爬蟲限制。"
-        
-    prompt = """請以資安專家的角度閱讀新聞，以純文字依照下列結構生成一份「技術情報摘要」。請確保用詞精確（例如：Passkey、Entra ID、FIDO2），並嚴格遵守以下格式：
+    
+    JOSN_prompt = '''請以資安專家的角度閱讀新聞，以純文字依照下列結構生成一份「技術情報摘要」。請確保用詞精確（例如：Passkey、Entra ID、FIDO2），並嚴格遵守以下格式：
+    回傳格式嚴格遵守JSON, 不要包含 markdown標記（不要 ```json ```），不要任何前言或後記，只回傳 JSON 物件本身。
+
+    JSON schema:
+{
+  "title": "簡潔標記新聞核心重點（字串）",
+  "keywords": "5-8 個英文關鍵字，全部小寫，逗號分隔，禁止複合詞（例如不可用 SessionHijacking，需拆為 session, hijacking），使用模型常見基礎單詞",
+  "date": [
+    "正式發布：（標註具體日期）",
+    "預計部署：（標註部署時程或預計影響時間）"
+  ],
+  "scope": [
+    "作業系統版本：（註明受影響或支援的系統）",
+    "適用對象：（說明適用的使用者等級或特定的企業驗證環境）"
+  ],
+  "impact": [
+    "深入分析該功能的核心價值，需包含技術原理、防禦能力以及趨勢推動（max 100字）"
+  ],
+  "summary": [
+    "整段式表達的重點整理，若內容較長可拆為多個字串元素（max 400字）"
+  ],
+  "url": "原始新聞網址"
+}
+ 
+規範：
+- title, keywords, url 是字串
+- date, scope, impact, summary 是字串陣列 (list of str)
+- summary 若超過一段，拆成多個陣列元素
+- impact 限 100 字內
+- summary 總計限 400 字內
+- scope 限 50~70 字
+'''      
+    Txt_prompt = """請以資安專家的角度閱讀新聞，以純文字依照下列結構生成一份「技術情報摘要」。請確保用詞精確（例如：Passkey、Entra ID、FIDO2），並嚴格遵守以下格式：
 
 1. [標題]：簡潔標記新聞核心重點。
 
@@ -73,23 +106,38 @@ def generate_summary(url, api_key):
 
 7. [新聞網址]：(放入來源連結)
     """
-    full_text = f"{prompt}\n\n以下是新聞全文：\n{article_text}"
-    return call_gemini(full_text, api_key)
+    full_text = f"{JOSN_prompt}\n\n以下是新聞全文：\n{article_text}"
+    raw = call_gemini(full_text, api_key)
+    if raw.startswith('❌'):return None, raw
 
-# 4. 主程式 (系統進入點)
+    cleaned = raw.strip()
+    if cleaned.startswith('```'):
+        cleaned = cleaned.split('\n', 1)[1]
+    if cleaned.endswith("```"):
+        cleaned = cleaned.rsplit("```", 1)[1]
+    try:
+        data = json.loads(cleaned)
+    except json.JSONDecodeError as e:
+        return None, f"Json parse error:{e}\n raw return {raw}"
+    if data.get("url") or data["url"] == "原始新聞網址":
+        data["url"] = url
+    return data, None
 def main():
     api_key = os.getenv("GEMINI_API_KEY")
     if not api_key:
         print("❌ 系統錯誤：找不到 API Key，請檢查 .env 檔案。", file=sys.stderr)
         sys.exit(1)
-#python3 ai_service.py https://examplenews.com 長度 = 2
+# ex. python3 ai_service.py https://examplenews.com 長度 = 2
     if len(sys.argv) < 2:
         print("❌ 缺少參數！請提供 URL。", file=sys.stderr)
         sys.exit(1)
         
     target_url = sys.argv[1]
-    final_result = generate_summary(target_url, api_key)
-    print(final_result)
+    data, err = generate_summary(target_url, api_key)
+    if err:
+        print(err, file=sys.stderr)
+        sys.exit(1)
+    print(json.dumps(data, ensure_ascii=False, indent=2))
 
 if __name__ == "__main__":
     main()
