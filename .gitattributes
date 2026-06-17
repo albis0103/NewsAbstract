@@ -1,1 +1,2 @@
-frontend/*.html linguist-detectable=false
+frontend/index.html linguist-vendored
+response_webhook.html linguist-vendored
