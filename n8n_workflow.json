@@ -1,0 +1,191 @@
+{
+  "name": "testing",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "cyber-news",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -624,
+        -80
+      ],
+      "id": "d04b81e9-8952-4458-a0a8-a2eeb35eeb7b",
+      "name": "Webhook",
+      "webhookId": "64b7dee2-ca06-4a1c-a37f-f34f0ced5c02"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"data\": {{ JSON.stringify($node['API:digest'].json.data) }},\n  \"similarity\": {{ $node['API:similarity'].json.stdout }}\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        64,
+        -112
+      ],
+      "id": "f56c5ba1-1dd9-4f1d-bd67-e2d7438d635a",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://news-dispatcher-service:8080/app/v1",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "text/plain;charset=UTF-8"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "text/plain",
+        "body": "={{ $json.formattedText }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        576,
+        -112
+      ],
+      "id": "81e6911d-c0fc-4e26-9629-c0ca7de5b76f",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "resume": "webhook",
+        "httpMethod": "POST",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        336,
+        -112
+      ],
+      "id": "5f7769cd-a5b2-46c8-afcf-5342cf6c34c5",
+      "name": "Wait",
+      "webhookId": "57a63c3a-2e19-4ee4-a27a-fe4c501eda57"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://news-nlp-services:8000/api/v1/similarity",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"keyword\": \"{{ $node['API:digest'].json.data.keywords }}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -288,
+        16
+      ],
+      "id": "779c4ff2-ea10-442b-889f-d77e2c6c82ab",
+      "name": "API:similarity"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://news-nlp-services:8000/api/v1/summarize",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"url\": \"{{ $json.query.NewsUrl }}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -352,
+        -256
+      ],
+      "id": "eb01757c-ec12-4720-9173-5d425063b7aa",
+      "name": "API:digest"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "API:digest",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respond to Webhook": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "API:similarity": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "API:digest": {
+      "main": [
+        [
+          {
+            "node": "API:similarity",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "5f46e731-a375-41d0-89bb-f0528f91dd10",
+  "meta": {
+    "instanceId": "21ce32adbbbc50635a4b7a60bbfe43ac03d2a0dc3ef2fa3023e33cfc36db3b80"
+  },
+  "id": "l30c7ENszja086Lk",
+  "tags": []
+}
