@@ -40,7 +40,7 @@ Bash<br>
 ```
 docker compose up -d --build
 ```
-Note: The first startup will take a few minutes as it downloads base images and downloads the Word2Vec model inside the Python container.<br>
+Note: The first startup will take a few minutes as it downloads base images and builds the services. Ensure the Word2Vec model (`fast_model.kv`) exists under `news-analyzer-py/models/`.<br>
 
 ### Step 3: Initialize n8n Workflow
 
@@ -50,13 +50,15 @@ Complete the initial setup (create a local admin account).<br>
 
 Import the my_workflow.json (or main-workflow.json) file into n8n.<br>
 
-Open the first Webhook node and ensure it is set to listen for GET requests and Respond is set to When Last Node Finishes.<br>
+- Open the **Webhook** node, ensure it listens for **GET** requests, and set **Respond** to **Using Respond to Webhook Node**.
+- Verify the flow is: `Webhook → API:digest → API:similarity → Respond to Webhook`, where Respond to Webhook returns JSON (`data` + `similarity`).
+- **Activate** the workflow (toggle to active) so the production webhook stays live.<br>
 
 Toggle the workflow to Public.<br>
 
 ### Step 4: Launch the UI
 
-Visit http://localhost:80 (or the port you defined for Nginx) in your browser. You can now submit news URLs and let the automated pipeline do the rest!<br>
+Visit `http://localhost:80` in your browser. Click a news card to analyze it, edit the generated digest, and add up to three articles to the weekly report. Preview the rendered email, then dispatch to all matched customers.<br>
 
 
 
