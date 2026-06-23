@@ -2,246 +2,57 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Render Service — Test Console</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Render Service Test</title>
     <style>
-        :root {
-            --bg-primary: #0f1117;
-            --bg-card: #21242f;
-            --bg-card-hover: #282c3a;
-            --bg-input: #181b24;
-            --border: #2a2e3b;
-            --text-primary: #e8eaed;
-            --text-secondary: #9aa0ab;
-            --text-muted: #6b7280;
-            --accent: #288bc4;
-            --success: #22c55e;
-            --danger: #ef4444;
-            --radius: 10px;
-            --radius-sm: 6px;
-            --shadow: 0 8px 30px rgba(0,0,0,0.5);
-            --transition: 0.2s ease;
-        }
+        body { font-family: sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; }
+        h1 { font-size: 20px; margin-bottom: 24px; }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        .event-block { border: 1px solid #ccc; border-radius: 6px; padding: 16px; margin-bottom: 16px; }
+        .event-block h3 { margin: 0 0 12px; font-size: 14px; color: #555; }
 
-        body {
-            font-family: 'Inter', -apple-system, sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            padding: 40px 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+        label { display: block; font-size: 12px; color: #888; margin: 10px 0 2px; }
+        label:first-of-type { margin-top: 0; }
+        input, textarea { width: 100%; box-sizing: border-box; padding: 8px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px; font-family: inherit; }
+        textarea { resize: vertical; min-height: 72px; }
+        .hint { font-size: 11px; color: #aaa; margin-top: 2px; }
 
-        .container { width: 100%; max-width: 960px; }
+        .actions { display: flex; gap: 8px; margin-top: 20px; }
+        button { padding: 10px 20px; font-size: 14px; border: none; border-radius: 4px; cursor: pointer; }
+        #renderBtn  { background: #288bc4; color: white; flex: 1; }
+        #renderBtn:disabled { opacity: 0.6; cursor: not-allowed; }
 
-        .header { text-align: center; margin-bottom: 40px; }
-        .logo { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
-        .subtitle { color: var(--accent); font-size: 13px; font-weight: 500; }
+        #status { margin-top: 12px; font-size: 13px; color: #888; }
 
-        .event-block {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 28px;
-            margin-bottom: 20px;
-            box-shadow: var(--shadow);
-        }
-        .event-header {
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--accent);
-            text-transform: uppercase;
-            letter-spacing: 0.6px;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .event-header::before {
-            content: '';
-            display: inline-block;
-            width: 6px; height: 6px;
-            border-radius: 50%;
-            background: var(--accent);
-        }
-
-        .field-group { display: flex; flex-direction: column; gap: 6px; }
-        .field-group label {
-            font-size: 11px;
-            font-weight: 600;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.6px;
-            margin-top: 14px;
-        }
-        .field-group label:first-child { margin-top: 0; }
-        .field-group input,
-        .field-group textarea {
-            width: 100%;
-            padding: 10px 12px;
-            background: var(--bg-input);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            color: var(--text-primary);
-            font-family: inherit;
-            font-size: 14px;
-            line-height: 1.6;
-            transition: border-color var(--transition);
-        }
-        .field-group textarea { resize: vertical; min-height: 80px; }
-        .field-group input:focus,
-        .field-group textarea:focus { outline: none; border-color: var(--accent); }
-        .hint { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
-
-        .action-btn {
-            background: linear-gradient(135deg, var(--accent), #1e6fa0);
-            color: white;
-            border: none;
-            padding: 14px 24px;
-            border-radius: var(--radius-sm);
-            font-size: 15px;
-            font-weight: 600;
-            font-family: inherit;
-            cursor: pointer;
-            transition: all var(--transition);
-            width: 100%;
-            display: block;
-            text-align: center;
-            margin-top: 12px;
-        }
-        .action-btn:hover { opacity: 0.9; transform: translateY(-1px); }
-        .action-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
-
-        .status-bar {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            padding: 12px 16px;
-            margin-top: 16px;
-            font-size: 13px;
-            color: var(--text-muted);
-            text-align: center;
-            display: none;
-        }
-        .status-bar.visible { display: block; }
-        .status-bar.ok  { color: var(--success); border-color: rgba(34,197,94,0.25); background: rgba(34,197,94,0.05); }
-        .status-bar.err { color: var(--danger);  border-color: rgba(239,68,68,0.25);  background: rgba(239,68,68,0.05); }
-
-        /* MODAL */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(4px);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        .modal-overlay.active { display: flex; opacity: 1; }
-
-        .preview-modal-content {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            width: 95%;
-            max-width: 720px;
-            height: 90vh;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
-            transform: translateY(20px);
-            transition: transform 0.3s ease;
-            overflow: hidden;
-        }
-        .modal-overlay.active .preview-modal-content { transform: translateY(0); }
-
-        .preview-modal-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 20px 28px;
-            border-bottom: 1px solid var(--border);
-            flex-shrink: 0;
-        }
-        .preview-modal-header h2 { font-size: 18px; font-weight: 700; }
-
-        .close-btn {
-            background: none; border: none;
-            color: var(--text-muted);
-            font-size: 24px; cursor: pointer;
-            transition: color var(--transition);
-            line-height: 1;
-        }
-        .close-btn:hover { color: var(--text-primary); }
-
-        #previewFrame {
-            flex: 1;
-            width: 100%;
-            border: none;
-            background: white;
-        }
-
-        .preview-modal-footer {
-            display: flex;
-            gap: 12px;
-            padding: 16px 28px;
-            border-top: 1px solid var(--border);
-            flex-shrink: 0;
-        }
-
-        .btn {
-            display: inline-flex; align-items: center; justify-content: center;
-            padding: 11px 20px;
-            border: none; border-radius: var(--radius-sm);
-            font-size: 14px; font-weight: 600; font-family: inherit;
-            cursor: pointer; transition: all var(--transition); flex: 1;
-        }
-        .btn-secondary {
-            background: var(--bg-input);
-            color: var(--text-primary);
-            border: 1px solid var(--border);
-        }
-        .btn-secondary:hover { border-color: var(--accent); }
-        .btn-success { background: var(--success); color: #fff; }
-        .btn-success:hover { opacity: 0.9; transform: translateY(-1px); }
-        .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        /* modal */
+        #previewModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); justify-content: center; align-items: center; }
+        #previewModal.active { display: flex; }
+        .modal-box { background: white; width: 90%; max-width: 700px; height: 85vh; display: flex; flex-direction: column; border-radius: 8px; overflow: hidden; }
+        .modal-header { padding: 14px 20px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+        .modal-header h2 { font-size: 16px; margin: 0; }
+        #previewFrame { flex: 1; border: none; width: 100%; }
+        .modal-footer { padding: 12px 20px; border-top: 1px solid #eee; display: flex; gap: 8px; justify-content: flex-end; }
+        #closeBtn    { background: #eee; color: #333; }
+        #dispatchBtn { background: #22c55e; color: white; }
+        #dispatchBtn:disabled { opacity: 0.6; cursor: not-allowed; }
     </style>
 </head>
 <body>
-<div class="container">
-    <div class="header">
-        <div class="logo">Render Service</div>
-        <div class="subtitle">POST /render → preview → dispatch</div>
-    </div>
 
-    <div id="eventsForm"></div>
+<h1>Render Service Test</h1>
+<div id="eventsForm"></div>
+<button id="renderBtn" onclick="submitRender()">Render Preview</button>
+<div id="status"></div>
 
-    <button class="action-btn" id="renderBtn" onclick="submitRender()">
-        Render Email Preview
-    </button>
-
-    <div class="status-bar" id="statusBar"></div>
-</div>
-
-<!-- Preview Modal -->
-<div class="modal-overlay" id="previewModal" onclick="closePreview(event)">
-    <div class="preview-modal-content" onclick="event.stopPropagation()">
-        <div class="preview-modal-header">
-            <h2>📧 Email Preview</h2>
-            <button class="close-btn" onclick="closePreview()">&times;</button>
+<div id="previewModal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h2>Email Preview</h2>
+            <span style="cursor:pointer;font-size:20px;" onclick="closeModal()">&times;</span>
         </div>
         <iframe id="previewFrame"></iframe>
-        <div class="preview-modal-footer">
-            <button class="btn btn-secondary" onclick="closePreview()">Cancel</button>
-            <button class="btn btn-success" id="dispatchBtn" onclick="confirmDispatch()">✅ Dispatch</button>
+        <div class="modal-footer">
+            <button id="closeBtn" onclick="closeModal()">Cancel</button>
+            <button id="dispatchBtn" onclick="confirmDispatch()">✅ Dispatch</button>
         </div>
     </div>
 </div>
@@ -251,42 +62,33 @@ const RENDER_URL     = 'http://localhost:8002/render';
 const DISPATCHER_URL = 'http://localhost:8080/app/v1';
 
 const FIELDS = [
-    { key: 'title',   label: '標題 Title',       type: 'input',    hint: null },
-    { key: 'date',    label: '發生時間 Date',      type: 'textarea', hint: '一行一項' },
-    { key: 'scope',   label: '影響範圍 Scope',     type: 'textarea', hint: '一行一項' },
-    { key: 'impact',  label: '潛在影響 Impact',    type: 'textarea', hint: '一行一項' },
-    { key: 'summary', label: '重點整理 Summary',   type: 'textarea', hint: '一行一段' },
-    { key: 'url',     label: '新聞網址 URL',       type: 'input',    hint: null },
+    { key: 'title',   label: '標題',   type: 'input' },
+    { key: 'date',    label: '發生時間', type: 'textarea', hint: '一行一項' },
+    { key: 'scope',   label: '影響範圍', type: 'textarea', hint: '一行一項' },
+    { key: 'impact',  label: '潛在影響', type: 'textarea', hint: '一行一項' },
+    { key: 'summary', label: '重點整理', type: 'textarea', hint: '一行一段' },
+    { key: 'url',     label: '網址',   type: 'input' },
 ];
 
 let pendingHtml = null;
 
-// ===== BUILD FORM =====
 function buildForm() {
-    const container = document.getElementById('eventsForm');
-    let html = '';
-    for (let i = 0; i < 3; i++) {
-        html += `<div class="event-block">`;
-        html += `<div class="event-header">Event ${i + 1}</div>`;
-        html += `<div class="field-group">`;
-        FIELDS.forEach(f => {
-            html += `<label>${f.label}</label>`;
-            if (f.type === 'textarea') {
-                html += `<textarea id="e${i}_${f.key}" rows="3"></textarea>`;
-            } else {
-                html += `<input type="text" id="e${i}_${f.key}">`;
-            }
-            if (f.hint) html += `<div class="hint">${f.hint}</div>`;
-        });
-        html += `</div></div>`;
-    }
-    container.innerHTML = html;
+    document.getElementById('eventsForm').innerHTML = [0,1,2].map(i => `
+        <div class="event-block">
+            <h3>Event ${i+1}</h3>
+            ${FIELDS.map(f => `
+                <label>${f.label}</label>
+                ${f.type === 'textarea'
+                    ? `<textarea id="e${i}_${f.key}" rows="2"></textarea>`
+                    : `<input type="text" id="e${i}_${f.key}">`}
+                ${f.hint ? `<div class="hint">${f.hint}</div>` : ''}
+            `).join('')}
+        </div>`).join('');
 }
 
-// ===== COLLECT EVENT =====
 function collectEvent(i) {
-    const get   = (key) => document.getElementById(`e${i}_${key}`).value.trim();
-    const lines = (key) => get(key).split('\n').map(l => l.trim()).filter(Boolean);
+    const get   = k => document.getElementById(`e${i}_${k}`).value.trim();
+    const lines = k => get(k).split('\n').map(l => l.trim()).filter(Boolean);
     return {
         title:   [get('title')],
         date:    lines('date'),
@@ -297,89 +99,60 @@ function collectEvent(i) {
     };
 }
 
-// ===== STATUS =====
-function setStatus(msg, type = '') {
-    const bar = document.getElementById('statusBar');
-    bar.textContent = msg;
-    bar.className = `status-bar visible ${type}`;
-}
+function setStatus(msg) { document.getElementById('status').textContent = msg; }
 
-// ===== RENDER =====
 async function submitRender() {
     const btn = document.getElementById('renderBtn');
-
-    const events = [collectEvent(0), collectEvent(1), collectEvent(2)];
+    const events = [0,1,2].map(collectEvent);
     for (let i = 0; i < 3; i++) {
-        if (!events[i].title[0]) {
-            setStatus(`Event ${i + 1} 的標題不能為空`, 'err');
-            return;
-        }
+        if (!events[i].title[0]) { setStatus(`Event ${i+1} 標題不能為空`); return; }
     }
-
     btn.disabled = true;
-    btn.textContent = '⏳ Rendering...';
-    setStatus('Sending to render service...', '');
-
+    btn.textContent = 'Rendering...';
+    setStatus('');
     try {
         const res = await fetch(RENDER_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ events }),
         });
-        if (!res.ok) {
-            const err = await res.json().catch(() => ({}));
-            throw new Error(err.detail || `HTTP ${res.status}`);
-        }
-        const data = await res.json();
-        pendingHtml = data.html;
-        setStatus(`Render OK · ${data.html.length.toLocaleString()} chars`, 'ok');
-        openPreview(data.html);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const { html } = await res.json();
+        pendingHtml = html;
+        document.getElementById('previewFrame').srcdoc = html;
+        document.getElementById('previewModal').classList.add('active');
     } catch (err) {
-        setStatus(`Render failed: ${err.message}`, 'err');
+        setStatus('Render failed: ' + err.message);
     } finally {
         btn.disabled = false;
-        btn.textContent = 'Render Email Preview';
+        btn.textContent = 'Render Preview';
     }
 }
 
-// ===== DISPATCH =====
 async function confirmDispatch() {
     if (!pendingHtml) return;
     const btn = document.getElementById('dispatchBtn');
     btn.disabled = true;
-    btn.textContent = '⏳ Dispatching...';
-
+    btn.textContent = 'Dispatching...';
     try {
         const res = await fetch(DISPATCHER_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ html: pendingHtml }),
         });
-        if (!res.ok) {
-            const err = await res.json().catch(() => ({}));
-            throw new Error(err.detail || `HTTP ${res.status}`);
-        }
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
         pendingHtml = null;
-        closePreview();
-        setStatus('Dispatch successful ✓', 'ok');
+        closeModal();
+        setStatus('Dispatch successful ✓');
     } catch (err) {
-        setStatus(`Dispatch failed: ${err.message}`, 'err');
+        setStatus('Dispatch failed: ' + err.message);
     } finally {
         btn.disabled = false;
         btn.textContent = ' Dispatch';
     }
 }
 
-// ===== PREVIEW MODAL =====
-function openPreview(html) {
-    document.getElementById('previewFrame').srcdoc = html;
-    document.getElementById('previewModal').classList.add('active');
-}
-function closePreview(e) {
-    // 只有 overlay 本身點擊才關閉（modal-content 有 stopPropagation）
-    if (e && e.currentTarget !== e.target) return;
-    document.getElementById('previewModal').classList.remove('active');
-}
+function closeModal() { document.getElementById('previewModal').classList.remove('active'); }
 
 buildForm();
 </script>
