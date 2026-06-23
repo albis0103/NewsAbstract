@@ -2,154 +2,290 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Render Service Test</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Render Service — Test Console</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-primary: #0f1117;
             --bg-card: #21242f;
+            --bg-card-hover: #282c3a;
             --bg-input: #181b24;
             --border: #2a2e3b;
             --text-primary: #e8eaed;
             --text-secondary: #9aa0ab;
             --text-muted: #6b7280;
             --accent: #288bc4;
+            --success: #22c55e;
+            --danger: #ef4444;
             --radius: 10px;
+            --radius-sm: 6px;
+            --shadow: 0 8px 30px rgba(0,0,0,0.5);
+            --transition: 0.2s ease;
         }
+
         * { box-sizing: border-box; margin: 0; padding: 0; }
+
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter', -apple-system, sans-serif;
             background: var(--bg-primary);
             color: var(--text-primary);
             padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
-        .container { max-width: 900px; margin: 0 auto; }
 
-        h1 { text-align: center; font-size: 22px; margin-bottom: 8px; }
-        .subtitle { text-align: center; color: var(--text-muted); font-size: 13px; margin-bottom: 32px; }
+        .container { width: 100%; max-width: 960px; }
+
+        .header { text-align: center; margin-bottom: 40px; }
+        .logo { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
+        .subtitle { color: var(--accent); font-size: 13px; font-weight: 500; }
 
         .event-block {
             background: var(--bg-card);
             border: 1px solid var(--border);
             border-radius: var(--radius);
-            padding: 24px;
+            padding: 28px;
             margin-bottom: 20px;
+            box-shadow: var(--shadow);
         }
         .event-header {
-            font-size: 15px;
+            font-size: 13px;
             font-weight: 600;
             color: var(--accent);
-            margin-bottom: 16px;
-        }
-        label {
-            display: block;
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text-secondary);
-            margin-bottom: 4px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.6px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
-        input, textarea {
+        .event-header::before {
+            content: '';
+            display: inline-block;
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: var(--accent);
+        }
+
+        .field-group { display: flex; flex-direction: column; gap: 6px; }
+        .field-group label {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            margin-top: 14px;
+        }
+        .field-group label:first-child { margin-top: 0; }
+        .field-group input,
+        .field-group textarea {
             width: 100%;
+            padding: 10px 12px;
             background: var(--bg-input);
             border: 1px solid var(--border);
-            border-radius: 6px;
+            border-radius: var(--radius-sm);
             color: var(--text-primary);
             font-family: inherit;
             font-size: 14px;
-            padding: 10px 12px;
-            margin-bottom: 14px;
-            resize: vertical;
+            line-height: 1.6;
+            transition: border-color var(--transition);
         }
-        input:focus, textarea:focus {
-            outline: none;
-            border-color: var(--accent);
-        }
-        textarea { min-height: 80px; }
-        .hint { font-size: 11px; color: var(--text-muted); margin: -10px 0 14px 0; }
+        .field-group textarea { resize: vertical; min-height: 80px; }
+        .field-group input:focus,
+        .field-group textarea:focus { outline: none; border-color: var(--accent); }
+        .hint { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
 
-        .btn {
-            display: block;
-            width: 100%;
-            padding: 14px;
+        .action-btn {
             background: linear-gradient(135deg, var(--accent), #1e6fa0);
             color: white;
             border: none;
-            border-radius: 6px;
-            font-family: inherit;
+            padding: 14px 24px;
+            border-radius: var(--radius-sm);
             font-size: 15px;
             font-weight: 600;
+            font-family: inherit;
             cursor: pointer;
+            transition: all var(--transition);
+            width: 100%;
+            display: block;
+            text-align: center;
             margin-top: 12px;
         }
-        .btn:hover { opacity: 0.9; }
-        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .action-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+        .action-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
-        .preview-frame {
-            display: none;
-            width: 100%;
-            height: 800px;
+        .status-bar {
+            background: var(--bg-card);
             border: 1px solid var(--border);
-            border-radius: var(--radius);
-            margin-top: 24px;
-            background: white;
-        }
-        .status-msg {
-            text-align: center;
+            border-radius: var(--radius-sm);
+            padding: 12px 16px;
             margin-top: 16px;
             font-size: 13px;
             color: var(--text-muted);
+            text-align: center;
+            display: none;
         }
+        .status-bar.visible { display: block; }
+        .status-bar.ok  { color: var(--success); border-color: rgba(34,197,94,0.25); background: rgba(34,197,94,0.05); }
+        .status-bar.err { color: var(--danger);  border-color: rgba(239,68,68,0.25);  background: rgba(239,68,68,0.05); }
+
+        /* MODAL */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .modal-overlay.active { display: flex; opacity: 1; }
+
+        .preview-modal-content {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            width: 95%;
+            max-width: 720px;
+            height: 90vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+            overflow: hidden;
+        }
+        .modal-overlay.active .preview-modal-content { transform: translateY(0); }
+
+        .preview-modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 28px;
+            border-bottom: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+        .preview-modal-header h2 { font-size: 18px; font-weight: 700; }
+
+        .close-btn {
+            background: none; border: none;
+            color: var(--text-muted);
+            font-size: 24px; cursor: pointer;
+            transition: color var(--transition);
+            line-height: 1;
+        }
+        .close-btn:hover { color: var(--text-primary); }
+
+        #previewFrame {
+            flex: 1;
+            width: 100%;
+            border: none;
+            background: white;
+        }
+
+        .preview-modal-footer {
+            display: flex;
+            gap: 12px;
+            padding: 16px 28px;
+            border-top: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            padding: 11px 20px;
+            border: none; border-radius: var(--radius-sm);
+            font-size: 14px; font-weight: 600; font-family: inherit;
+            cursor: pointer; transition: all var(--transition); flex: 1;
+        }
+        .btn-secondary {
+            background: var(--bg-input);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+        .btn-secondary:hover { border-color: var(--accent); }
+        .btn-success { background: var(--success); color: #fff; }
+        .btn-success:hover { opacity: 0.9; transform: translateY(-1px); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
     </style>
 </head>
 <body>
 <div class="container">
-    <h1>Render Service Test</h1>
-    <p class="subtitle">POST /render → preview email HTML</p>
+    <div class="header">
+        <div class="logo">Render Service</div>
+        <div class="subtitle">POST /render → preview → dispatch</div>
+    </div>
 
     <div id="eventsForm"></div>
 
-    <button class="btn" onclick="submitRender()">Render Email</button>
-    <div class="status-msg" id="status"></div>
+    <button class="action-btn" id="renderBtn" onclick="submitRender()">
+        Render Email Preview
+    </button>
 
-    <iframe class="preview-frame" id="preview"></iframe>
+    <div class="status-bar" id="statusBar"></div>
+</div>
+
+<!-- Preview Modal -->
+<div class="modal-overlay" id="previewModal" onclick="closePreview(event)">
+    <div class="preview-modal-content" onclick="event.stopPropagation()">
+        <div class="preview-modal-header">
+            <h2>📧 Email Preview</h2>
+            <button class="close-btn" onclick="closePreview()">&times;</button>
+        </div>
+        <iframe id="previewFrame"></iframe>
+        <div class="preview-modal-footer">
+            <button class="btn btn-secondary" onclick="closePreview()">Cancel</button>
+            <button class="btn btn-success" id="dispatchBtn" onclick="confirmDispatch()">✅ Dispatch</button>
+        </div>
+    </div>
 </div>
 
 <script>
-const RENDER_URL = 'http://localhost:8002/render';
+const RENDER_URL     = 'http://localhost:8002/render';
+const DISPATCHER_URL = 'http://localhost:8080/app/v1';
+
 const FIELDS = [
-    { key: 'title',   label: '標題 Title',          type: 'input' },
-    { key: 'date',    label: '發生時間 Date',         type: 'textarea', hint: '一行一項' },
-    { key: 'scope',   label: '影響範圍 Scope',        type: 'textarea', hint: '一行一項' },
-    { key: 'impact',  label: '潛在影響 Impact',       type: 'textarea', hint: '一行一項' },
-    { key: 'summary', label: '重點整理 Summary',      type: 'textarea', hint: '一行一段' },
-    { key: 'url',     label: '新聞網址 URL',          type: 'input' },
+    { key: 'title',   label: '標題 Title',       type: 'input',    hint: null },
+    { key: 'date',    label: '發生時間 Date',      type: 'textarea', hint: '一行一項' },
+    { key: 'scope',   label: '影響範圍 Scope',     type: 'textarea', hint: '一行一項' },
+    { key: 'impact',  label: '潛在影響 Impact',    type: 'textarea', hint: '一行一項' },
+    { key: 'summary', label: '重點整理 Summary',   type: 'textarea', hint: '一行一段' },
+    { key: 'url',     label: '新聞網址 URL',       type: 'input',    hint: null },
 ];
 
+let pendingHtml = null;
+
+// ===== BUILD FORM =====
 function buildForm() {
     const container = document.getElementById('eventsForm');
     let html = '';
     for (let i = 0; i < 3; i++) {
         html += `<div class="event-block">`;
         html += `<div class="event-header">Event ${i + 1}</div>`;
+        html += `<div class="field-group">`;
         FIELDS.forEach(f => {
             html += `<label>${f.label}</label>`;
             if (f.type === 'textarea') {
-                html += `<textarea id="e${i}_${f.key}"></textarea>`;
+                html += `<textarea id="e${i}_${f.key}" rows="3"></textarea>`;
             } else {
                 html += `<input type="text" id="e${i}_${f.key}">`;
             }
             if (f.hint) html += `<div class="hint">${f.hint}</div>`;
         });
-        html += `</div>`;
+        html += `</div></div>`;
     }
     container.innerHTML = html;
 }
 
+// ===== COLLECT EVENT =====
 function collectEvent(i) {
-    const get = (key) => document.getElementById(`e${i}_${key}`).value.trim();
+    const get   = (key) => document.getElementById(`e${i}_${key}`).value.trim();
     const lines = (key) => get(key).split('\n').map(l => l.trim()).filter(Boolean);
     return {
         title:   [get('title')],
@@ -161,25 +297,28 @@ function collectEvent(i) {
     };
 }
 
+// ===== STATUS =====
+function setStatus(msg, type = '') {
+    const bar = document.getElementById('statusBar');
+    bar.textContent = msg;
+    bar.className = `status-bar visible ${type}`;
+}
+
+// ===== RENDER =====
 async function submitRender() {
-    const status = document.getElementById('status');
-    const preview = document.getElementById('preview');
-    const btn = document.querySelector('.btn');
+    const btn = document.getElementById('renderBtn');
 
     const events = [collectEvent(0), collectEvent(1), collectEvent(2)];
-
-    // 基本檢查
     for (let i = 0; i < 3; i++) {
         if (!events[i].title[0]) {
-            status.textContent = `Event ${i + 1} 的標題不能為空`;
-            status.style.color = '#ff4d4d';
+            setStatus(`Event ${i + 1} 的標題不能為空`, 'err');
             return;
         }
     }
 
     btn.disabled = true;
-    status.textContent = 'Rendering...';
-    status.style.color = 'var(--text-muted)';
+    btn.textContent = '⏳ Rendering...';
+    setStatus('Sending to render service...', '');
 
     try {
         const res = await fetch(RENDER_URL, {
@@ -187,24 +326,59 @@ async function submitRender() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ events }),
         });
-
         if (!res.ok) {
-            const err = await res.json();
-            throw new Error(err.detail || res.statusText);
+            const err = await res.json().catch(() => ({}));
+            throw new Error(err.detail || `HTTP ${res.status}`);
         }
-
         const data = await res.json();
-        preview.srcdoc = data.html;
-        preview.style.display = 'block';
-        status.textContent = `200 OK · ${data.html.length} chars`;
-        status.style.color = '#4ade80';
+        pendingHtml = data.html;
+        setStatus(`Render OK · ${data.html.length.toLocaleString()} chars`, 'ok');
+        openPreview(data.html);
     } catch (err) {
-        status.textContent = `Error: ${err.message}`;
-        status.style.color = '#ff4d4d';
-        preview.style.display = 'none';
+        setStatus(`Render failed: ${err.message}`, 'err');
     } finally {
         btn.disabled = false;
+        btn.textContent = 'Render Email Preview';
     }
+}
+
+// ===== DISPATCH =====
+async function confirmDispatch() {
+    if (!pendingHtml) return;
+    const btn = document.getElementById('dispatchBtn');
+    btn.disabled = true;
+    btn.textContent = '⏳ Dispatching...';
+
+    try {
+        const res = await fetch(DISPATCHER_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ html: pendingHtml }),
+        });
+        if (!res.ok) {
+            const err = await res.json().catch(() => ({}));
+            throw new Error(err.detail || `HTTP ${res.status}`);
+        }
+        pendingHtml = null;
+        closePreview();
+        setStatus('Dispatch successful ✓', 'ok');
+    } catch (err) {
+        setStatus(`Dispatch failed: ${err.message}`, 'err');
+    } finally {
+        btn.disabled = false;
+        btn.textContent = ' Dispatch';
+    }
+}
+
+// ===== PREVIEW MODAL =====
+function openPreview(html) {
+    document.getElementById('previewFrame').srcdoc = html;
+    document.getElementById('previewModal').classList.add('active');
+}
+function closePreview(e) {
+    // 只有 overlay 本身點擊才關閉（modal-content 有 stopPropagation）
+    if (e && e.currentTarget !== e.target) return;
+    document.getElementById('previewModal').classList.remove('active');
 }
 
 buildForm();
