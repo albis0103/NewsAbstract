@@ -10,7 +10,8 @@ In a modern SOC (Security Operations Center), analysts are overwhelmed by daily 
 ---
 
 ### Prerequisites
-* **Docker Desktop** (or Docker Engine + Docker Compose)
+* **Docker Desktop** (or Docker Engine + Docker Compose)<br>
+[solution of installation Trouble on Windows](https://github.com/albis0103/NewsAbstract/wiki/Troubleshooting-&-FAQ)
 * **MongoDB Atlas** account (or local MongoDB)
 * API Keys for **Gemini** and **Jina**
 
