@@ -34,7 +34,7 @@ Create two `.env` files in their respective service directories.1. **Python Anal
 ```env
    MONGODB_URI=mongodb+srv://<user>:<password>@cluster0.net/newsdb
    SMTP_HOST=sandbox.smtp.mailtrap.io
-   SMTP_PORT=2525
+   SMTP_PORT=your_smtp_port
    SMTP_USER=your_smtp_user
    SMTP_PASS=your_smtp_pass
 ```
