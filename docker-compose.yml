@@ -76,6 +76,8 @@ services:
     build: ./news-dispatcher
     ports: 
       - "8080:8080"
+    env_file:
+      - ./news-dispatcher/.env
     restart: "no"
     
   dashboard-api:

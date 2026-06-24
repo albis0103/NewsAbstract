@@ -18,21 +18,29 @@ In a modern SOC (Security Operations Center), analysts are overwhelmed by daily 
 ---
 
 ### Step 1: Environment Configuration
-Create two `.env` files in their respective service directories.
-
-1. **Python Analyzer (`news-analyzer-py/.env`)**
-   ```env
+Create two `.env` files in their respective service directories.1. **Python Analyzer (`news-analyzer-py/.env`)**
+```env
    GEMINI_API_KEY=your_gemini_key_here
    JINA_API_KEY=your_jina_key_here
-2. **Java Dispatcher (news-dispatcher-service/src/main/resources/application.properties)**
-
-Configure your database and SMTP (e.g., Mailtrap)<br>
-:(news-dispatcher-service/src/main/resources/application.properties)
+   MONGODB_URI=mongodb+srv://<user>:<password>@cluster0.net/newsdb
 ```
-spring.data.mongodb.uri=mongodb+srv://<user>:<password>@cluster0.net/SecOpsDB
-spring.mail.host=sandbox.smtp.mailtrap.io
-spring.mail.port=2525
+ 
+2. **Dashboard API (`dashboard-api/.env`)**
+```env
+   MONGODB_URI=mongodb+srv://<user>:<password>@cluster0.net/newsdb
 ```
+ 
+3. **Java Dispatcher (`news-dispatcher/.env`)**
+```env
+   MONGODB_URI=mongodb+srv://<user>:<password>@cluster0.net/newsdb
+   SMTP_HOST=sandbox.smtp.mailtrap.io
+   SMTP_PORT=2525
+   SMTP_USER=your_smtp_user
+   SMTP_PASS=your_smtp_pass
+```
+   These are injected into the container via `env_file` in `docker-compose.yml`, and read in `application.properties` as `${MONGODB_URI}`, `${SMTP_HOST}`, etc.
+ 
+> **Security note:** Never commit credentials. `.env` is listed in `.gitignore`. If a secret was committed previously, rotate it 
 ### Step 2: One-Click Deployment
 
 Open your terminal at the root of the project (where docker-compose.yml is located) and run:<br>
@@ -49,13 +57,13 @@ Once all containers are running, visit http://localhost:5678 to access the n8n d
 
 Complete the initial setup (create a local admin account).<br>
 
-Import the my_workflow.json (or main-workflow.json) file into n8n.<br>
+Import the n8n_workflow.json (or main-workflow.json) file into n8n.<br>
 
 - Open the **Webhook** node, ensure it listens for **GET** requests, and set **Respond** to **Using Respond to Webhook Node**.
 - Verify the flow is: `Webhook → API:digest → API:similarity → Respond to Webhook`, where Respond to Webhook returns JSON (`data` + `similarity`).
 - **Activate** the workflow (toggle to active) so the production webhook stays live.<br>
 
-Toggle the workflow to Public.<br>
+**activate** the workflow(toggle to active) to Public.<br>
 
 ### Step 4: Launch the UI
 

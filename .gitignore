@@ -1,5 +1,8 @@
 venv/
 .env
+*.env
+**/.env
+n8n_data/
 __pycache__/
 models/
 .DS_Store

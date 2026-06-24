@@ -8,7 +8,9 @@ import threading
 import json
 from typing import List
 import time
+from dotenv import load_dotenv
 
+load_dotenv()
 
 app = FastAPI(title='Dashboard API')
 #set CORS
@@ -21,8 +23,8 @@ app.add_middleware(
 )
 
 # setting mongodb atlas connection setting
-MONGO_URI = "mongodb+srv://jasonwu:jason0103@cluster0.xvreqja.mongodb.net/newsdb?authSource=admin&retryWrites=true&w=majority"
-client = AsyncIOMotorClient(MONGO_URI)
+MONGODB_URI = os.getenv('MONGODB_URI')
+client = AsyncIOMotorClient(MONGODB_URI)
 db = client['newsdb']
 rss_collection = db['rss_source']
 

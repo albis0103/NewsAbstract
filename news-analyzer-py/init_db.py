@@ -1,4 +1,8 @@
 from pymongo import MongoClient
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
 CUSTOMER_FEATURES_DB = {
     "VGH北榮":["Medical", "In-house Development", "HIS system"],
     "CMU中國附醫":["Medical Center", "AIoT Healthcare Dev", "HIS Management"],
@@ -19,7 +23,8 @@ CUSTOMER_FEATURES_DB = {
     "MFMA 海能風電":["Renewable Energy", "Infrastructure IT", "SCADA Monitoring IS"],
     "CGM 長庚科技":["Medical Tech", "Healthcare IT Dev", "Smart HIS System"]
 }
-client = MongoClient('mongodb+srv://jasonwu:jason0103@cluster0.xvreqja.mongodb.net/newsdb?authSource=admin&retryWrites=true&w=majority')
+MONGODB_URI= os.getenv('MONGODB_URI')
+client = MongoClient(MONGODB_URI)
 db = client['newsdb']
 collection = db['webhooks']
 def init_database():

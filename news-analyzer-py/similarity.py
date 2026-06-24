@@ -6,9 +6,11 @@ from deep_translator import GoogleTranslator
 import json
 import os
 from pymongo import MongoClient
-
-
 import sys
+from dotenv import load_dotenv
+
+load_dotenv()
+
 sys.stdout.reconfigure(encoding='utf-8')
 
 sys.stderr.write("wait for loading word2vec model")
@@ -44,8 +46,10 @@ SECURITY_WORD_DICTIONARY = {
     "ic": "integrated circuit"
 }
 
+MONGODB_URI = os.getenv("MONGODB_URI")
+
 def get_customer_feature():
-    client = MongoClient('mongodb+srv://jasonwu:jason0103@cluster0.xvreqja.mongodb.net/newsdb?authSource=admin&retryWrites=true&w=majority')
+    client = MongoClient(MONGODB_URI)
     db = client['newsdb']
     collection = db['webhooks']
     customer_feature = {}
